@@ -6,6 +6,7 @@ import { getJson } from "./helpers/api-util";
 import { Container } from "reactstrap";
 import ResultList from "./components/ResultList";
 
+const rowsPerPage = 10; // TODO: make this configurable
 function App() {
   const [data, setData] = React.useState<JsonData>();
 
@@ -18,7 +19,11 @@ function App() {
     };
     response();
   }, []);
-  return <Container>{data && <ResultList data={data?.data.data} />}</Container>;
+  return (
+    <Container>
+      {data && <ResultList data={data.data.data} rowsPerPage={rowsPerPage} />}
+    </Container>
+  );
 }
 
 export default App;
