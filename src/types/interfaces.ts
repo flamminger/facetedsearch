@@ -1,3 +1,4 @@
+// globally used interfaces
 export interface Data {
   txt: string;
   value: string;
