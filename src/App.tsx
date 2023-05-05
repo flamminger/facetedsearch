@@ -1,5 +1,4 @@
 import React, { useEffect } from "react";
-import logo from "./logo.svg";
 import "./App.css";
 import { JsonData } from "./types/interfaces";
 import "bootstrap/dist/css/bootstrap.min.css";

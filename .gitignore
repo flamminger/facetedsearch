@@ -26,3 +26,4 @@ yarn-error.log*
 #IDE
 /.idea
 /.vscode
+/public/api/sample.json
