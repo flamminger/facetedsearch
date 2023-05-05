@@ -1,26 +1,25 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useEffect } from "react";
+import logo from "./logo.svg";
+import "./App.css";
+import { JsonData } from "./types/interfaces";
+import "bootstrap/dist/css/bootstrap.min.css";
+import { getJson } from "./helpers/api-util";
+import { Container } from "reactstrap";
+import ResultList from "./components/ResultList";
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+  const [data, setData] = React.useState<JsonData>();
+
+  useEffect(() => {
+    const response = async () => {
+      const data = await getJson("api/rta.json");
+      if (data) {
+        setData(data);
+      }
+    };
+    response();
+  }, []);
+  return <Container>{data && <ResultList data={data?.data.data} />}</Container>;
 }
 
 export default App;
