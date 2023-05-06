@@ -25,7 +25,7 @@ const sliceItems = (data: Data[], page: number, rowsPerPage: number) => {
   return data.slice(start, end);
 };
 
-const useTable = (data: Data[], page: number, rowsPerPage: number) => {
+const usePagination = (data: Data[], page: number, rowsPerPage: number) => {
   const [tableRange, setTableRange] = useState<number[]>([]);
   const [slice, setSlice] = useState<Data[]>([]);
   const [paginationInfo, setPaginationInfo] = useState<PaginationInfo>({
@@ -73,4 +73,4 @@ const useTable = (data: Data[], page: number, rowsPerPage: number) => {
   return { slice, range: tableRange, paginationInfo };
 };
 
-export default useTable;
+export default usePagination;

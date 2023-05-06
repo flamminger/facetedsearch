@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Table } from "reactstrap";
-import useTable from "../hooks/useTable";
+import usePagination from "../hooks/usePagination";
 import { Data } from "../types/interfaces";
 import Pagination from "./Pagination";
 
@@ -11,8 +11,7 @@ interface Props {
 
 const ResultList: React.FC<Props> = ({ data, rowsPerPage }) => {
   const [page, setPage] = useState(1);
-
-  const { slice, range } = useTable(data, page, rowsPerPage);
+  const { slice, range } = usePagination(data, page, rowsPerPage);
 
   const handlePageChange = (newPage: number) => {
     setPage(newPage);
