@@ -21,9 +21,10 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-/public/api/rta.json
+
 
 #IDE
 /.idea/
 /.vscode/
 /public/api/sample.json
+/public/api/rta.json

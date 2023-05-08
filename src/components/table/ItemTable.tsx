@@ -1,11 +1,10 @@
 import MaterialReactTable from "material-react-table";
 import type { MRT_ColumnDef } from "material-react-table";
 import { useMemo } from "react";
-import { Data } from "../types/interfaces";
+import { Data } from "../../types/interfaces";
 
 interface Props {
   data: Data[];
-  rowsPerPage: number;
 }
 interface columns {
   id: number;
@@ -18,24 +17,7 @@ interface dateRange {
   endDate: string;
 }
 
-const testColumns: columns[] = [
-  {
-    id: 1,
-    txt: "test1",
-    date: { startDate: "2020-01-01", endDate: "2020-01-02" },
-  },
-  {
-    id: 2,
-    txt: "test2",
-    date: { startDate: "2020-01-01", endDate: "2020-01-02" },
-  },
-  {
-    id: 3,
-    txt: "test3",
-    date: { startDate: "2020-01-01", endDate: "2020-01-02" },
-  },
-];
-const ItemTable: React.FC<Props> = ({ data, rowsPerPage }) => {
+const ItemTable: React.FC<Props> = ({ data }) => {
   const columns = useMemo<MRT_ColumnDef<Data>[]>(
     () => [
       {
@@ -58,7 +40,7 @@ const ItemTable: React.FC<Props> = ({ data, rowsPerPage }) => {
     <MaterialReactTable
       columns={columns}
       data={data}
-      enableRowSelection={true}
+      enableRowSelection={false}
       enableColumnOrdering={true}
       enableGlobalFilter={true}
     />

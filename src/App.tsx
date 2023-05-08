@@ -2,12 +2,11 @@ import React, { useEffect } from "react";
 import "./App.css";
 import { JsonData } from "./types/interfaces";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { getJson } from "./helpers/api-util";
+import {getFacets, getJson} from "./helpers/api-util";
 import { Container } from "reactstrap";
-import ResultList from "./components/ResultList";
-import ItemTable from "./components/ItemTable";
+import ItemTable from "./components/table/ItemTable";
 
-const rowsPerPage = 10; // TODO: make this configurable
+
 function App() {
   const [data, setData] = React.useState<JsonData>();
 
@@ -16,18 +15,16 @@ function App() {
       const data = await getJson("api/rta.json");
       if (data) {
         setData(data);
+        getFacets(data);
       }
     };
     response();
+
   }, []);
   return (
     <>
-      <Container>
-        {data && <ResultList data={data.data.data} rowsPerPage={rowsPerPage} />}
-      </Container>
-
-      <Container>
-        {data && <ItemTable data={data.data.data} rowsPerPage={rowsPerPage} />}
+      <Container className="p-5">
+        {data && <ItemTable data={data.data.data} />}
       </Container>
     </>
   );

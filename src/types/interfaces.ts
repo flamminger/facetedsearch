@@ -9,13 +9,17 @@ export interface Data {
   tags: string[];
 }
 
-interface FacetConstraintMap {
+export interface FacetConstraintMap extends Index{
   Ort: string[];
   Gruppe: string[];
   "Diplomatische Form": string[];
   Textsorte: string[];
   Person: string[];
   Sachbegriffe: string[];
+}
+
+interface Index {
+    [key: string]: string[];
 }
 
 interface Gui {
