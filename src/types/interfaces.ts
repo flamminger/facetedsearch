@@ -33,3 +33,8 @@ export interface JsonData {
     data: Data[];
   };
 }
+
+export interface TagPairs {
+  [key: string]: Set<string>;
+}
+

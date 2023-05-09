@@ -1,4 +1,4 @@
-import {FacetConstraintMap, JsonData} from "../types/interfaces";
+import {Data, FacetConstraintMap, JsonData, TagPairs} from "../types/interfaces";
 
 
 /**
@@ -13,21 +13,39 @@ export const getJson = async (url: string) => {
     }
 };
 
-interface FacetSet {
-    [key: string]: Set<string>;
-}
+
+/**
+ * gets facets from FacetConstraintMap
+ * @param data object from input Json
+ */
 export const getFacets = (data: JsonData) => {
-    const tags: FacetConstraintMap = data.data.facetConstraintMap;
-    console.log(tags);
-    let facets: FacetSet = {};
-    for (const key in tags) {
+    const faceConstrainMap: FacetConstraintMap = data.data.facetConstraintMap;
+    let facets: TagPairs = {};
+    for (const key in faceConstrainMap) {
         let currentKey = key;
-        let currentArray = tags[key];
+        let currentArray = faceConstrainMap[key];
         let items = new Set(currentArray);
         if (!facets[currentKey]) {
             facets[currentKey] = items;
         }
     }
-    console.log(facets)
+    console.log(facets);
 return facets;
+}
+
+
+
+
+export const getTags = (data: JsonData) => {
+    const entries = data.data.data;
+    let tagPairs = [];
+    let tags: TagPairs = {};
+    for (const entry of entries) {
+        if (entry.value && entry.tags) {
+            tags[entry.value] = new Set(entry.tags);
+            tagPairs.push(tags);
+        }
+    }
+    console.log(tagPairs)
+    return tagPairs;
 }
