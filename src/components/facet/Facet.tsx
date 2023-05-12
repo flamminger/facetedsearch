@@ -1,82 +1,83 @@
-import {JsonData, Data, FacetConstraintMap, TagPairs} from "../../types/interfaces";
-import React, {useState} from "react";
+import { Data, JsonData, TagOcc, TagSet } from "../../types/interfaces";
+import React, { useEffect } from "react";
+import {
+  Checkbox,
+  FormControlLabel,
+  FormGroup,
+  Typography,
+} from "@mui/material";
 
 interface Props {
-    data: JsonData;
-    facetConstraintMap: FacetConstraintMap
+  data: JsonData;
+  facets: TagSet;
+  tags: TagSet;
 }
 
+interface Occurence {
+  key: string;
+  value: number;
+}
 
-const Facet: React.FC<Props> = (Props) => {
-    const [tagPairs, setTagPairs] = useState<TagPairs>({selectedTags: new Set<string>});
+const Facet: React.FC<Props> = (props) => {
+  const [generalTags, setGeneralTags] = React.useState<Occurence[]>();
+  const [selectedTags, setSelectedTags] = React.useState<string[]>([]);
 
-
-    const clickTagHandler = (tag: string) => {
-        const {selectedTags} = tagPairs;
-        if (selectedTags.has(tag)) {
-            selectedTags.delete(tag);
-        } else {
-            selectedTags.add(tag);
-        }
-        setTagPairs({selectedTags});
-    }
-
-    const filterData = () => {
-        const {data} = Props.data.data;
-        const {selectedTags} = tagPairs;
-
-        return data.filter(item => {
-            for (const tag of selectedTags) {
-                if (!item.tags.includes(tag)) {
-                    return false;
-                }
+  useEffect(() => {
+    const availableTags = (facets: TagSet) => {
+      const tags = Object.values(facets);
+      const data: Data[] = props.data.data.data;
+      let availableTags: TagOcc = {};
+      for (const tagArray of tags) {
+        for (const tag of tagArray) {
+          for (const dataItem of data) {
+            const dataTags: string[] = dataItem.tags;
+            if (dataTags.includes(tag) && !availableTags[tag]) {
+              availableTags[tag] = 1;
+            } else if (dataTags.includes(tag)) {
+              availableTags[tag]++;
             }
-            return true;
-        })
+          }
+        }
+      }
+      const mapped = Object.entries(availableTags).map(([key, value]) => ({
+        key,
+        value,
+      }));
+      setGeneralTags(mapped);
+    };
+    availableTags(props.facets);
+  }, []);
+
+  const tagSelectHandler = (tag: string) => {
+    if (selectedTags.includes(tag)) {
+      setSelectedTags(selectedTags.filter((t) => t !== tag));
+    } else {
+      setSelectedTags([...selectedTags, tag]);
     }
+  };
 
-    const { facetConstraintMap } = Props.facetConstraintMap;
-    const { selectedTags } = tagPairs;
-
-    const allTags = Object.values(Props.facetConstraintMap).flat();
-
-    // Generate a list of selected tags that are still available for selection
-    const availableTags = allTags.filter(tag => !selectedTags.has(tag));
-
-    // Filter data based on selected tags
-    const filteredData = filterData();
-
-    return (
-        <>
-        <div>
-        <h2>Search</h2>
-        {Array.from(selectedTags).map(tag => (
-            <span key={tag} onClick={() => clickTagHandler(tag)}>
-              {tag} &#x2715;
-            </span>
-        ))}
-
-    </div>
-        <div>
-            <h3>Available Tags:</h3>
-            {availableTags.map(tag => (
-                <span key={tag} onClick={() => clickTagHandler(tag)}>
-              {tag}
-            </span>
+  // const filterData = props.data.data.data.tags.filter((item) => {
+  //   return (
+  //     selectedTags.length === 0 || selectedTags.some((tag) => tag.includes(tag))
+  //   );
+  // });
+  console.log(generalTags);
+  return (
+    <FormGroup>
+      {Object.entries(props.facets).map(([key]) => (
+        <div key={key}>
+          <Typography variant="h6">{key}</Typography>
+          {generalTags &&
+            generalTags.map((tag) => (
+              <FormControlLabel
+                key={tag.key}
+                control={<Checkbox />}
+                label={`${tag.key} (${tag.value})`}
+              />
             ))}
         </div>
-        <div>
-            <h3>Filtered Results:</h3>
-            {filteredData.map(item => (
-                <div key={item.value}>
-                    <p>{item.txt}</p>
-                    <p>{item.value}</p>
-                    <p>{item.tags.join(", ")}</p>
-                </div>
-            ))}
-        </div>
-        </>
-    )
+      ))}
+    </FormGroup>
+  );
 };
-
 export default Facet;

@@ -9,7 +9,7 @@ export interface Data {
   tags: string[];
 }
 
-export interface FacetConstraintMap extends Index{
+export interface FacetConstraintMap extends Index {
   Ort: string[];
   Gruppe: string[];
   "Diplomatische Form": string[];
@@ -19,7 +19,7 @@ export interface FacetConstraintMap extends Index{
 }
 
 interface Index {
-    [key: string]: string[];
+  [key: string]: string[];
 }
 
 interface Gui {
@@ -34,7 +34,10 @@ export interface JsonData {
   };
 }
 
-export interface TagPairs {
-  [key: string]: Set<string>;
+export interface TagSet {
+  [key: string]: string[];
 }
 
+export interface TagOcc {
+  [key: string]: number;
+}
