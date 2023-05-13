@@ -1,19 +1,18 @@
-import {
-  Data,
-  FacetConstraintMap,
-  JsonData,
-  TagSet,
-} from "../types/interfaces";
+import {Data, FacetConstraintMap, JsonData, TagSet,} from "../types/interfaces";
 
 /**
  * fetch json data from url
  * @param url
  */
-export const getJson = async (url: string) => {
+export const getJson = async (url: string): Promise<JsonData> => {
   try {
-    return fetch(url).then((res) => res.json());
-  } catch (e) {
-    throw e;
+    const response = await fetch (url);
+    if (!response.ok) {
+      throw new Error(`Could not fetch data from ${url}!`);
+    }
+    return await response.json();
+  } catch (error) {
+    throw new Error(`Failed to fetch JSON {error.message}`);
   }
 };
 
@@ -21,16 +20,15 @@ export const getJson = async (url: string) => {
  * gets facets from FacetConstraintMap
  * @param data object from input Json
  */
-export const getFacets = (data: JsonData) => {
+export const getFacets = (data: JsonData): TagSet => {
   const faceConstrainMap: FacetConstraintMap = data.data.facetConstraintMap;
-  let facets: TagSet = {};
+  const facets: TagSet = {};
   for (const key in faceConstrainMap) {
-    let currentKey = key;
-    let currentArray = faceConstrainMap[key];
-    let items = new Set(currentArray);
-    let itemsArray = Array.from(items);
-    if (!facets[currentKey] || facets[currentKey]) {
-      facets[currentKey] = itemsArray;
+    const currentArray = faceConstrainMap[key];
+    const items = new Set(currentArray);
+    const itemsArray = Array.from(items);
+    if (!facets[key]) {
+      facets[key] = itemsArray;
     }
   }
   return facets;
@@ -40,15 +38,13 @@ export const getFacets = (data: JsonData) => {
  * gets tags from data
  * @param data
  */
-export const getTags = (data: JsonData) => {
-  const entries = data.data.data;
-  let tagPairs = [];
-  let tags: TagSet = {};
-  for (const entry of entries) {
-    if (entry.value && entry.tags) {
-      tags[entry.value] = Array.from(new Set(entry.tags));
-      tagPairs.push(tags);
+export const getTags = (data: JsonData): TagSet => {
+  const entries: Data[] = data.data.data;
+  const entryTags: TagSet = {};
+  for (const {value, tags} of entries) {
+    if (value && tags) {
+      entryTags[value] = Array.from(new Set(tags));
     }
   }
-  return tagPairs;
+  return entryTags;
 };
