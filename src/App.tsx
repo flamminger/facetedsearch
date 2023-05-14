@@ -1,23 +1,30 @@
 import React, { useEffect } from "react";
 import "./App.css";
-import { JsonData, TagSet } from "./types/interfaces";
-import "bootstrap/dist/css/bootstrap.min.css";
+import { AppData, UniqueTags } from "./types/interfaces";
 import { getFacets, getJson, getTags } from "./helpers/api-util";
 import ItemTable from "./components/table/ItemTable";
 import Facet from "./components/facet/Facet";
 import { Container } from "@mui/material";
 
 function App() {
-  const [data, setData] = React.useState<JsonData>();
-  const [facets, setFacets] = React.useState<TagSet>({});
+  const [data, setData] = React.useState<AppData>();
+  const [facets, setFacets] = React.useState<UniqueTags>({});
 
   useEffect(() => {
     const fetchData = async () => {
-      const data: JsonData = await getJson("api/rta.json");
-      if (data) {
-        setData(data);
-        const facets = getFacets(data);
-        setFacets(facets);
+      try {
+        const data: AppData = await getJson("api/rta.json");
+        if (data) {
+          setData(data);
+          const facets = getFacets(data);
+          setFacets(facets);
+        }
+      } catch (error) {
+        if (error instanceof Error) {
+          throw new Error(`Failed to fetch JSON ${error.message}`);
+        } else {
+          throw new Error("Something went wrong!");
+        }
       }
     };
     fetchData();
@@ -26,7 +33,7 @@ function App() {
     <>
       {/*<Container>{data && <ItemTable data={data.data.data} />}</Container>*/}
       <Container>
-        {facets && data && <Facet facets={facets} data={data} />}
+        {Object.keys(facets).length > 0 && data && <Facet facets={facets} data={data} />}
       </Container>
     </>
   );

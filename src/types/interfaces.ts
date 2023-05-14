@@ -1,13 +1,16 @@
 // globally used interfaces
+export interface DateRange {
+  startDate: string;
+  endDate: string;
+}
+
 export interface Data {
   txt: string;
   value: string;
-  date: {
-    startDate: string;
-    endDate: string;
-  };
+  date: DateRange;
   tags: string[];
 }
+
 
 export interface FacetConstraintMap extends Index {
   Ort: string[];
@@ -16,6 +19,7 @@ export interface FacetConstraintMap extends Index {
   Textsorte: string[];
   Person: string[];
   Sachbegriffe: string[];
+  Ressourcentyp: string[];
 }
 
 interface Index {
@@ -26,7 +30,7 @@ interface Gui {
   appTitle: string;
 }
 
-export interface JsonData {
+export interface AppData {
   gui: Gui;
   data: {
     facetConstraintMap: FacetConstraintMap;
@@ -34,10 +38,10 @@ export interface JsonData {
   };
 }
 
-export interface TagSet {
+export interface UniqueTags {
   [key: string]: string[];
 }
 
-export interface TagOcc {
+export interface TagOccurrences {
   [key: string]: number;
 }

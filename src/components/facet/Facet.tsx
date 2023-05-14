@@ -1,11 +1,11 @@
-import {Data, JsonData, TagSet} from "../../types/interfaces";
+import {Data, AppData, UniqueTags} from "../../types/interfaces";
 import React, {useEffect, useState} from "react";
 import {Button, FormGroup, Typography,} from "@mui/material";
 import TagList from "./TagList";
 
 interface Props {
-    data: JsonData;
-    facets: TagSet;
+    data: AppData;
+    facets: UniqueTags;
 }
 
 interface Occurrence {
@@ -34,7 +34,7 @@ const Facet: React.FC<Props> = (props) => {
          * gets tag + occurrence count
          * @param facets
          */
-        const availableTags = (facets: TagSet) => {
+        const availableTags = (facets: UniqueTags) => {
             const data: Data[] = props.data.data.data;
             const availableTags: DomainOccurrence = {};
 
