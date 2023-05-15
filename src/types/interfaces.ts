@@ -11,7 +11,6 @@ export interface Data {
   tags: string[];
 }
 
-
 export interface FacetConstraintMap extends Index {
   Ort: string[];
   Gruppe: string[];
@@ -43,5 +42,18 @@ export interface UniqueTags {
 }
 
 export interface TagOccurrences {
+  [key: string]: number;
+}
+
+export interface Occurrence {
+  key: string;
+  value: number;
+}
+
+export interface DomainOccurrence {
+  [key: string]: Occurrence[];
+}
+
+export interface Record {
   [key: string]: number;
 }

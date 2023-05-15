@@ -1,10 +1,11 @@
 import React, { useEffect } from "react";
 import "./App.css";
 import { AppData, UniqueTags } from "./types/interfaces";
-import { getFacets, getJson, getTags } from "./helpers/api-util";
+import { getFacets, getJson } from "./helpers/api-util";
 import ItemTable from "./components/table/ItemTable";
 import Facet from "./components/facet/Facet";
-import { Container } from "@mui/material";
+import { Grid } from "@mui/material";
+import { SelectedTagsProvider } from "./contexts/SelectedTagsContext";
 
 function App() {
   const [data, setData] = React.useState<AppData>();
@@ -29,13 +30,20 @@ function App() {
     };
     fetchData();
   }, []);
+
   return (
-    <>
-      {/*<Container>{data && <ItemTable data={data.data.data} />}</Container>*/}
-      <Container>
-        {Object.keys(facets).length > 0 && data && <Facet facets={facets} data={data} />}
-      </Container>
-    </>
+    <SelectedTagsProvider>
+      <Grid container spacing={2}>
+        <Grid item xs={4}>
+          {Object.keys(facets).length > 0 && data && (
+            <Facet facets={facets} AppData={data} />
+          )}
+        </Grid>
+        <Grid item xs={8}>
+          {data && <ItemTable data={data.data.data} />}
+        </Grid>
+      </Grid>
+    </SelectedTagsProvider>
   );
 }
 

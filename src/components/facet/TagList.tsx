@@ -1,26 +1,39 @@
 import React from "react";
-import {
-    Checkbox,
-    FormControlLabel,
-} from "@mui/material";
+import { Checkbox, FormControlLabel, List, ListItem } from "@mui/material";
+import { useSelectedTags } from "../../contexts/SelectedTagsContext";
+import { Occurrence } from "../../types/interfaces";
 
-interface Occurrence {
-    key: string;
-    value: number;
+interface TagListProps {
+  tags: Occurrence[];
 }
 
-const TagList: React.FC<{ tags: Occurrence[] }> = ({ tags }) => {
-    return (
-        <>
-            {tags.map((tag) => (
-                <FormControlLabel
-                    key={tag.key}
-                    control={<Checkbox />}
-                    label={`${tag.key} - ${tag.value}`}
-                />
-            ))}
-        </>
-    );
+const TagList: React.FC<TagListProps> = ({ tags }) => {
+  const { selectedTags, setSelectedTags } = useSelectedTags();
+  const tagSelectHandler = (tag: string) => {
+    if (selectedTags.includes(tag)) {
+      setSelectedTags(selectedTags.filter((t) => t !== tag));
+    } else {
+      setSelectedTags([...selectedTags, tag]);
+    }
+  };
+  return (
+    <List>
+      {tags.map((tag) => (
+        <ListItem key={tag.key}>
+          <FormControlLabel
+            key={tag.key}
+            control={
+              <Checkbox
+                checked={selectedTags.includes(tag.key)}
+                onChange={() => tagSelectHandler(tag.key)}
+              />
+            }
+            label={`${tag.key} - ${tag.value}`}
+          />
+        </ListItem>
+      ))}
+    </List>
+  );
 };
 
 export default TagList;

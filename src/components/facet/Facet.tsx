@@ -1,131 +1,78 @@
-import {Data, AppData, UniqueTags} from "../../types/interfaces";
-import React, {useEffect, useState} from "react";
-import {Button, FormGroup, Typography,} from "@mui/material";
-import TagList from "./TagList";
+import {
+  Data,
+  AppData,
+  UniqueTags,
+  Occurrence,
+  DomainOccurrence,
+  Record,
+} from "../../types/interfaces";
+import React, { useEffect, useState } from "react";
+import { FormGroup } from "@mui/material";
+import FacetGroup from "./FacetGroup";
 
 interface Props {
-    data: AppData;
-    facets: UniqueTags;
+  AppData: AppData;
+  facets: UniqueTags;
 }
 
-interface Occurrence {
-    key: string;
-    value: number;
-}
+const Facet: React.FC<Props> = ({ AppData, facets }) => {
+  const [generalTags, setGeneralTags] = useState<DomainOccurrence | null>();
+  const [currentPage, setCurrentPage] = useState<Record>({});
+  const tagsPerPage: number = 5;
 
-interface DomainOccurrence {
-    [key: string]: Occurrence[];
+  useEffect(() => {
+    /**
+     * gets tag + occurrence count
+     * @param facets
+     */
+    const availableTags = (facets: UniqueTags) => {
+      const data: Data[] = AppData.data.data;
+      const availableTags: DomainOccurrence = {};
 
-}
-
-interface Record {
-    [key: string]: number;
-}
-
-const Facet: React.FC<Props> = (props) => {
-    const [generalTags, setGeneralTags] = useState<DomainOccurrence | null>();
-    const [selectedTags, setSelectedTags] = React.useState<string[]>([]);
-    const [visibleTags, setVisibleTags] = useState<DomainOccurrence | null>(null);
-    const [currentPage, setCurrentPage] = useState<Record>({});
-    const tagsPerPage: number = 10;
-
-    useEffect(() => {
-        /**
-         * gets tag + occurrence count
-         * @param facets
-         */
-        const availableTags = (facets: UniqueTags) => {
-            const data: Data[] = props.data.data.data;
-            const availableTags: DomainOccurrence = {};
-
-            for (const category in facets) {
-                const tags = facets[category];
-                const tagsOccurence: Occurrence[] = [];
-
-                for (const tag of tags) {
-                    let occurrence = 0;
-
-                    for (const dataItem of data) {
-                        const dataTags: string[] = dataItem.tags;
-
-                        if (dataTags.includes(tag)) {
-                            occurrence++;
-                        }
-                    }
-
-                    tagsOccurence.push({key: tag, value: occurrence});
-                }
-
-                availableTags[category] = tagsOccurence.sort((a, b) => b.value - a.value).slice(0, 30);
-            }
-
-            setGeneralTags(availableTags);
-        };
-        availableTags(props.facets);
-    }, [props.data.data.data, props.facets]);
-
-    // useEffect(() => {
-    //     if (generalTags) {
-    //         const start = (currentPage - 1) * tagsPerPage;
-    //         const end = start + tagsPerPage;
-    //         const visibleTags: DomainOccurrence = {};
-    //
-    //         for (const category in generalTags) {
-    //             const tags = generalTags[category].slice(start, end);
-    //             visibleTags[category] = tags;
-    //         }
-    //         setVisibleTags(visibleTags);
-    //     }
-    // }, [currentPage, generalTags]);
-
-    const tagSelectHandler = (tag: string) => {
-        if (selectedTags.includes(tag)) {
-            setSelectedTags(selectedTags.filter((t) => t !== tag));
-        } else {
-            setSelectedTags([...selectedTags, tag]);
+      // count tag occurrences
+      const tagOccurrenceMap: { [tag: string]: number } = {};
+      for (const item of data) {
+        const dataTags: string[] = item.tags;
+        for (const tag of dataTags) {
+          tagOccurrenceMap[tag] = (tagOccurrenceMap[tag] || 0) + 1;
         }
+      }
+
+      for (const category in facets) {
+        const tags = facets[category];
+        const tagsOccurrence: Occurrence[] = [];
+
+        for (const tag of tags) {
+          const occurrence = tagOccurrenceMap[tag] || 0;
+          tagsOccurrence.push({ key: tag, value: occurrence });
+        }
+        availableTags[category] = tagsOccurrence.sort(
+          (a, b) => b.value - a.value
+        );
+      }
+      setGeneralTags(availableTags);
     };
+    availableTags(facets);
+  }, [AppData.data.data, facets]);
 
-    const pageChangeHandler = (category: string, page: number) => {
-        setCurrentPage((prevState) => ({
-            ...prevState,
-            [category]: page,
-        }));
-    };
+  const pageChangeHandler = (category: string, page: number) => {
+    setCurrentPage((prevState) => ({
+      ...prevState,
+      [category]: page,
+    }));
+  };
 
-
-    // const filterData = props.data.data.data.tags.filter((item) => {
-    //   return (
-    //     selectedTags.length === 0 || selectedTags.some((tag) => tag.includes(tag))
-    //   );
-    // });
-    console.log(generalTags);
-    return (
-        <FormGroup>
-            {generalTags &&
-                Object.entries(generalTags).map(([category, tags]) => {
-                    const categoryTags = tags.slice(
-                        0,
-                        (currentPage[category] || 1) * tagsPerPage
-                    );
-
-                    const handleLoadMoreTags = () => {
-                        pageChangeHandler(category, (currentPage[category] || 1) + 1);
-                    };
-
-                    return (
-                        <div key={category}>
-                            <Typography variant="h6">{category}</Typography>
-                            <TagList tags={categoryTags} />
-                            {categoryTags.length < tags.length && (
-                                <Button variant="contained" onClick={handleLoadMoreTags}>
-                                    Load More
-                                </Button>
-                            )}
-                        </div>
-                    );
-                })}
-        </FormGroup>
-    );
+  return (
+    <FormGroup>
+      {generalTags && (
+        <FacetGroup
+          generalTags={generalTags}
+          currentPage={currentPage}
+          tagsPerPage={tagsPerPage}
+          pageChangeHandler={pageChangeHandler}
+        />
+      )}
+    </FormGroup>
+  );
 };
 export default Facet;

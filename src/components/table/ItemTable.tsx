@@ -1,23 +1,26 @@
-import MaterialReactTable from "material-react-table";
 import type { MRT_ColumnDef } from "material-react-table";
-import { useMemo } from "react";
+import MaterialReactTable from "material-react-table";
+import React, { useMemo } from "react";
 import { Data } from "../../types/interfaces";
+import { useSelectedTags } from "../../contexts/SelectedTagsContext";
 
 interface Props {
   data: Data[];
 }
-interface columns {
-  id: number;
-  txt: string;
-  date: dateRange;
-}
-
-interface dateRange {
-  startDate: string;
-  endDate: string;
-}
 
 const ItemTable: React.FC<Props> = ({ data }) => {
+  const { selectedTags } = useSelectedTags();
+
+  const filteredData = useMemo(() => {
+    if (selectedTags.length === 0) {
+      return data;
+    }
+
+    return data.filter((item) => {
+      return selectedTags.every((tag) => item.tags.includes(tag));
+    });
+  }, [data, selectedTags]);
+
   const columns = useMemo<MRT_ColumnDef<Data>[]>(
     () => [
       {
@@ -36,10 +39,14 @@ const ItemTable: React.FC<Props> = ({ data }) => {
     []
   );
 
+  if (!filteredData || filteredData.length === 0) {
+    return <div>No data available to display</div>;
+  }
+  console.log(selectedTags);
   return (
     <MaterialReactTable
       columns={columns}
-      data={data}
+      data={filteredData}
       enableRowSelection={false}
       enableColumnOrdering={true}
       enableGlobalFilter={true}
