@@ -28,12 +28,24 @@ const ItemTable: React.FC<Props> = ({ data }) => {
         accessorKey: "txt",
       },
       {
-        header: "From",
-        accessorKey: "date.startDate",
+        header: "DateRange: Start",
+        accessorFn: (row) => {
+          if (!row.date) {
+            return "NA";
+          } else if (row.date && row.date.startDate) {
+            return row.date.startDate;
+          }
+        },
       },
       {
-        header: "To",
-        accessorKey: "date.endDate",
+        header: "DateRange: End",
+        accessorFn: (row) => {
+          if (!row.date) {
+            return "NA";
+          } else if (row.date && row.date.endDate) {
+            return row.date.endDate;
+          }
+        },
       },
     ],
     []

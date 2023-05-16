@@ -1,4 +1,5 @@
-import { FacetConstraintMap, AppData, UniqueTags } from "../types/interfaces";
+import { AppData } from "../types/interfaces";
+import { preprocessData } from "./data-util";
 
 /**
  * fetch json data from url
@@ -8,6 +9,7 @@ export const getJson = async (url: string): Promise<AppData> => {
   try {
     const response = await fetch(url);
     if (!response.ok) {
+      console.log(response.status);
       throw new Error(`Could not fetch data from ${url}!`);
     }
     const data = await response.json();
@@ -19,28 +21,4 @@ export const getJson = async (url: string): Promise<AppData> => {
       throw new Error("Something went wrong!");
     }
   }
-};
-
-/**
- * gets facets from FacetConstraintMap
- * @param data object from input Json
- */
-export const getFacets = (data: AppData): UniqueTags => {
-  const faceConstrainMap: FacetConstraintMap = data.data.facetConstraintMap;
-  const facets: UniqueTags = {};
-  for (const [key, value] of Object.entries(faceConstrainMap)) {
-    facets[key] = Array.from(new Set(value));
-  }
-  return facets;
-};
-
-/**
- * remove duplicates from item tags
- * @param data
- */
-export const preprocessData = (data: AppData): AppData => {
-  data.data.data.forEach((item) => {
-    item.tags = Array.from(new Set(item.tags));
-  });
-  return data;
 };

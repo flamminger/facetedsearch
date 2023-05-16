@@ -4,6 +4,7 @@ import React, { useContext, useState } from "react";
 interface SelectedTagsContextProps {
   selectedTags: string[];
   setSelectedTags: React.Dispatch<React.SetStateAction<string[]>>;
+  clearSelectedTags: () => void;
 }
 
 const SelectedTagsContext = React.createContext<
@@ -31,8 +32,14 @@ export const SelectedTagsProvider = ({
 }: SelectedTagsProviderProps) => {
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
 
+  const clearSelectedTags = () => {
+    setSelectedTags([]);
+  };
+
   return (
-    <SelectedTagsContext.Provider value={{ selectedTags, setSelectedTags }}>
+    <SelectedTagsContext.Provider
+      value={{ selectedTags, setSelectedTags, clearSelectedTags }}
+    >
       {children}
     </SelectedTagsContext.Provider>
   );
