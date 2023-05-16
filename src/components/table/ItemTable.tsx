@@ -42,7 +42,7 @@ const ItemTable: React.FC<Props> = ({ data }) => {
   if (!filteredData || filteredData.length === 0) {
     return <div>No data available to display</div>;
   }
-  console.log(selectedTags);
+
   return (
     <MaterialReactTable
       columns={columns}

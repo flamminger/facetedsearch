@@ -1,7 +1,5 @@
 # Getting Started with Create React App
 
-Proxy works on Node 16
-
 ## Available Scripts
 
 In the project directory, you can run:
