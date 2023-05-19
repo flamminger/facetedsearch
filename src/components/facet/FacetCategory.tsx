@@ -1,54 +1,62 @@
 import {
-  Accordion,
-  AccordionDetails,
-  AccordionSummary,
-  Button,
-  Typography,
+    Accordion,
+    AccordionDetails,
+    AccordionSummary, Box,
+    Button, Container,
+    Typography,
 } from "@mui/material";
-import { ExpandMore } from "@mui/icons-material";
+import {ExpandMore} from "@mui/icons-material";
+import AddIcon from '@mui/icons-material/Add';
+import RemoveIcon from '@mui/icons-material/Remove';
 import TagList from "./TagList";
-import { Occurrence } from "../../types/interfaces";
+import {Occurrence} from "../../types/interfaces";
 import React from "react";
+import FacetCategorySearch from "./FacetCategorySearch";
 
 interface FacetCategoryProps {
-  categoryName: string;
-  categoryTags: Occurrence[];
-  tags: Occurrence[];
-  onLoadMore: () => void;
-  onLoadLess: () => void;
+    categoryName: string;
+    categoryTags: Occurrence[];
+    tags: Occurrence[];
+    onLoadMore: () => void;
+    onLoadLess: () => void;
 }
 
 const FacetCategory: React.FC<FacetCategoryProps> = ({
-  categoryName,
-  categoryTags,
-  tags,
-  onLoadMore,
-  onLoadLess,
-}) => {
-  return (
-    <Accordion>
-      <AccordionSummary
-        expandIcon={<ExpandMore />}
-        aria-controls="panel1a-content"
-        id="panel1a-header"
-      >
-        <Typography variant="h6">{categoryName}</Typography>
-      </AccordionSummary>
-      <AccordionDetails>
-        <TagList tags={tags} />
-        {categoryTags.length > tags.length && (
-          <Button variant="contained" onClick={onLoadMore}>
-            Load More
-          </Button>
-        )}
-        {tags.length > 5 && (
-          <Button variant="contained" onClick={onLoadLess}>
-            Load Less
-          </Button>
-        )}
-      </AccordionDetails>
-    </Accordion>
-  );
+                                                         categoryName,
+                                                         categoryTags,
+                                                         tags,
+                                                         onLoadMore,
+                                                         onLoadLess,
+                                                     }) => {
+    return (
+        <Accordion>
+            <AccordionSummary
+                expandIcon={<ExpandMore/>}
+                aria-controls="panel1a-content"
+                id="panel1a-header"
+            >
+                <Typography variant="h6">{categoryName}</Typography>
+            </AccordionSummary>
+            <AccordionDetails>
+                <FacetCategorySearch tags={categoryTags}/>
+                <TagList tags={tags}/>
+                <Container>
+                    <Box display="flex" justifyContent="space-between">
+                    {categoryTags.length > tags.length && (
+                        <Button variant="contained" size="small" onClick={onLoadMore}>
+                            <AddIcon fontSize="small"/>
+                        </Button>
+                    )}
+                    {tags.length > 5 && (
+                        <Button variant="contained" size="small" onClick={onLoadLess}>
+                            <RemoveIcon fontSize="small"/>
+                        </Button>
+                    )}
+                    </Box>
+                </Container>
+            </AccordionDetails>
+        </Accordion>
+    );
 };
 
 export default FacetCategory;
