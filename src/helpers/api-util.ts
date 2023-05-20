@@ -1,11 +1,11 @@
-import { AppData } from "../types/interfaces";
+import { IAppData } from "../types/interfaces";
 import { preprocessData } from "./data-util";
 
 /**
  * fetch json data from url
  * @param url
  */
-export const getJson = async (url: string): Promise<AppData> => {
+export const getJson = async (url: string): Promise<IAppData> => {
   try {
     const response = await fetch(url);
     if (!response.ok) {

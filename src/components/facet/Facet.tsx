@@ -1,10 +1,10 @@
 import {
-    Data,
-    AppData,
-    UniqueTags,
-    Occurrence,
-    DomainOccurrence,
-    Record,
+    IData,
+    IAppData,
+    IUniqueTags,
+    IOccurrence,
+    IDomainOccurrence,
+    IRecord,
 } from "../../types/interfaces";
 import React, {useEffect, useState} from "react";
 import {Box, Button, FormGroup} from "@mui/material";
@@ -12,9 +12,9 @@ import FacetGroup from "./FacetGroup";
 import {useSelectedTags} from "../../contexts/SelectedTagsContext";
 
 interface Props {
-    AppData: AppData;
-    facets: UniqueTags;
-    filteredData: Data[] | undefined;
+    AppData: IAppData;
+    facets: IUniqueTags;
+    filteredData: IData[] | undefined;
 }
 
 interface TagOccurrence {
@@ -22,8 +22,8 @@ interface TagOccurrence {
 }
 
 const Facet: React.FC<Props> = ({AppData, facets, filteredData}) => {
-    const [generalTags, setGeneralTags] = useState<DomainOccurrence | null>();
-    const [currentPage, setCurrentPage] = useState<Record>({});
+    const [generalTags, setGeneralTags] = useState<IDomainOccurrence | null>();
+    const [currentPage, setCurrentPage] = useState<IRecord>({});
     const [tagOccurrenceMap, setTagOccurrenceMap] = useState<TagOccurrence>({});
     const tagsPerPage: number = 5;
     const {selectedTags, clearSelectedTags} = useSelectedTags();
@@ -43,11 +43,11 @@ const Facet: React.FC<Props> = ({AppData, facets, filteredData}) => {
     }, [AppData.data.data, selectedTags, filteredData]);
 
     useEffect(() => {
-        const availableTags: DomainOccurrence = {};
+        const availableTags: IDomainOccurrence = {};
 
         for (const category in facets) {
             const tags = facets[category];
-            const tagsOccurrence: Occurrence[] = [];
+            const tagsOccurrence: IOccurrence[] = [];
 
             for (const tag of tags) {
                 const occurrence = tagOccurrenceMap[tag] || 0;

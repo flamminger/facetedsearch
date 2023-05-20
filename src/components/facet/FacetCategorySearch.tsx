@@ -1,10 +1,10 @@
 import React from 'react';
-import { Occurrence } from "../../types/interfaces";
+import { IOccurrence } from "../../types/interfaces";
 import {Autocomplete, Box, TextField} from "@mui/material";
 import {useSelectedTags} from "../../contexts/SelectedTagsContext";
 
 interface Props {
-    tags: Occurrence[];
+    tags: IOccurrence[];
 
 }
 

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Data } from "../types/interfaces";
+import { IData } from "../types/interfaces";
 
 interface PaginationInfo {
   currentPage: number;
@@ -10,7 +10,7 @@ interface PaginationInfo {
   pages: number[];
 }
 
-const itemRange = (data: Data[], rowsPerPage: number) => {
+const itemRange = (data: IData[], rowsPerPage: number) => {
   const range: number[] = [];
   const num = Math.ceil(data.length / rowsPerPage);
   for (let i = 1; i <= num; i++) {
@@ -19,15 +19,15 @@ const itemRange = (data: Data[], rowsPerPage: number) => {
   return range;
 };
 
-const sliceItems = (data: Data[], page: number, rowsPerPage: number) => {
+const sliceItems = (data: IData[], page: number, rowsPerPage: number) => {
   const start = (page - 1) * rowsPerPage;
   const end = start + rowsPerPage;
   return data.slice(start, end);
 };
 
-const usePagination = (data: Data[], page: number, rowsPerPage: number) => {
+const usePagination = (data: IData[], page: number, rowsPerPage: number) => {
   const [tableRange, setTableRange] = useState<number[]>([]);
-  const [slice, setSlice] = useState<Data[]>([]);
+  const [slice, setSlice] = useState<IData[]>([]);
   const [paginationInfo, setPaginationInfo] = useState<PaginationInfo>({
     currentPage: 1,
     firstPage: 1,

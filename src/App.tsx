@@ -1,19 +1,25 @@
 import React, {useEffect, useMemo} from "react";
 import "./App.css";
-import {AppData, UniqueTags} from "./types/interfaces";
+import {IAppData, IUniqueTags} from "./types/interfaces";
 import {getJson} from "./helpers/api-util";
 import {getFacets} from "./helpers/data-util";
 import ItemTable from "./components/table/ItemTable";
 import Facet from "./components/facet/Facet";
-import {Container, Grid} from "@mui/material";
+import {Container, Grid, Typography} from "@mui/material";
 import {useSelectedTags} from "./contexts/SelectedTagsContext";
 import LoadingSpinner from "./components/ui/LoadingSpinner";
 
 function App() {
-    const [data, setData] = React.useState<AppData>();
-    const [facets, setFacets] = React.useState<UniqueTags>({});
-
+    const [data, setData] = React.useState<IAppData>();
+    const [facets, setFacets] = React.useState<IUniqueTags>({});
     const {selectedTags} = useSelectedTags();
+
+    const title = useMemo((): string => {
+        if (data && data.gui && data.gui.appTitle) {
+            return data.gui.appTitle;
+        }
+        return "App Title"
+    }, [data]);
 
     const filteredData = useMemo(() => {
         if (!data?.data?.data || selectedTags.length === 0) {
@@ -31,7 +37,7 @@ function App() {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const data: AppData = await getJson("/api/rta.json");
+                const data: IAppData = await getJson("/api/rta.json");
                 if (data) {
                     setData(data);
                     const facets = getFacets(data);
@@ -47,22 +53,29 @@ function App() {
         };
         fetchData();
     }, []);
-
+    console.log(title)
     return (
-        <Container>
-            <Grid container spacing={2}>
-                <Grid item xs={4}>
-                    {!data && <LoadingSpinner/>}
-                    {Object.keys(facets).length > 0 && data && (
-                        <Facet facets={facets} AppData={data} filteredData={filteredData}/>
-                    )}
+        <>
+            <Container>
+                <Typography variant="h1">
+                    {title}
+                </Typography>
+            </Container>
+            <Container>
+                <Grid container spacing={2}>
+                    <Grid item xs={4}>
+                        {!data && <LoadingSpinner/>}
+                        {Object.keys(facets).length > 0 && data && (
+                            <Facet facets={facets} AppData={data} filteredData={filteredData}/>
+                        )}
+                    </Grid>
+                    <Grid item xs={8}>
+                        {!filteredData && <LoadingSpinner/>}
+                        {filteredData && <ItemTable data={filteredData}/>}
+                    </Grid>
                 </Grid>
-                <Grid item xs={8}>
-                    {!filteredData && <LoadingSpinner/>}
-                    {filteredData && <ItemTable data={filteredData}/>}
-                </Grid>
-            </Grid>
-        </Container>
+            </Container>
+        </>
     );
 }
 

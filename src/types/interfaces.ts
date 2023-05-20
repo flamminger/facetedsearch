@@ -1,17 +1,17 @@
 // globally used interfaces
-export interface DateRange {
+export interface IDateRange {
   startDate: string;
   endDate: string;
 }
 
-export interface Data {
+export interface IData {
   txt: string;
   value: string;
-  date: DateRange;
+  date: IDateRange;
   tags: string[];
 }
 
-export interface FacetConstraintMap extends Index {
+export interface IFacetConstraintMap extends IIndex {
   Ort: string[];
   Gruppe: string[];
   "Diplomatische Form": string[];
@@ -21,39 +21,35 @@ export interface FacetConstraintMap extends Index {
   Ressourcentyp: string[];
 }
 
-interface Index {
+interface IIndex {
   [key: string]: string[];
 }
 
-interface Gui {
+interface IGui {
   appTitle: string;
 }
 
-export interface AppData {
-  gui: Gui;
+export interface IAppData {
+  gui: IGui;
   data: {
-    facetConstraintMap: FacetConstraintMap;
-    data: Data[];
+    facetConstraintMap: IFacetConstraintMap;
+    data: IData[];
   };
 }
 
-export interface UniqueTags {
+export interface IUniqueTags {
   [key: string]: string[];
 }
 
-export interface TagOccurrences {
-  [key: string]: number;
-}
-
-export interface Occurrence {
+export interface IOccurrence {
   key: string;
   value: number;
 }
 
-export interface DomainOccurrence {
-  [key: string]: Occurrence[];
+export interface IDomainOccurrence {
+  [key: string]: IOccurrence[];
 }
 
-export interface Record {
+export interface IRecord {
   [key: string]: number;
 }

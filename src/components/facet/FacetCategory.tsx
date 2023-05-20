@@ -9,14 +9,14 @@ import {ExpandMore} from "@mui/icons-material";
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
 import TagList from "./TagList";
-import {Occurrence} from "../../types/interfaces";
+import {IOccurrence} from "../../types/interfaces";
 import React from "react";
 import FacetCategorySearch from "./FacetCategorySearch";
 
 interface FacetCategoryProps {
     categoryName: string;
-    categoryTags: Occurrence[];
-    tags: Occurrence[];
+    categoryTags: IOccurrence[];
+    tags: IOccurrence[];
     onLoadMore: () => void;
     onLoadLess: () => void;
 }

@@ -1,11 +1,11 @@
 import type { MRT_ColumnDef } from "material-react-table";
 import MaterialReactTable from "material-react-table";
 import React, { useMemo } from "react";
-import { Data } from "../../types/interfaces";
+import { IData } from "../../types/interfaces";
 import { useSelectedTags } from "../../contexts/SelectedTagsContext";
 
 interface Props {
-  data: Data[];
+  data: IData[];
 }
 
 const ItemTable: React.FC<Props> = ({ data }) => {
@@ -21,7 +21,7 @@ const ItemTable: React.FC<Props> = ({ data }) => {
     });
   }, [data, selectedTags]);
 
-  const columns = useMemo<MRT_ColumnDef<Data>[]>(
+  const columns = useMemo<MRT_ColumnDef<IData>[]>(
     () => [
       {
         header: "Title",

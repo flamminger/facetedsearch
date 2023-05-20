@@ -1,10 +1,10 @@
-import { DomainOccurrence, Record } from "../../types/interfaces";
+import { IDomainOccurrence, IRecord } from "../../types/interfaces";
 import React from "react";
 import FacetCategory from "./FacetCategory";
 
 interface FacetGroupProps {
-  generalTags: DomainOccurrence;
-  currentPage: Record;
+  generalTags: IDomainOccurrence;
+  currentPage: IRecord;
   tagsPerPage: number;
   pageChangeHandler: (category: string, page: number) => void;
 }
