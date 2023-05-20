@@ -5,10 +5,11 @@ import { getJson } from "./helpers/api-util";
 import { getFacets } from "./helpers/data-util";
 import ItemTable from "./components/table/ItemTable";
 import Facet from "./components/facet/Facet";
-import { Container, Grid, Typography } from "@mui/material";
+import { Container, Grid } from "@mui/material";
 import { useSelectedTags } from "./contexts/SelectedTagsContext";
 import LoadingSpinner from "./components/ui/LoadingSpinner";
 import AppTitle from "./components/ui/AppTitle";
+import ActiveTags from "./components/ui/ActiveTags";
 
 function App() {
   const [data, setData] = React.useState<IAppData>();
@@ -54,11 +55,17 @@ function App() {
     };
     fetchData();
   }, []);
-  console.log(title);
   return (
     <>
       <Container>
-        <AppTitle title={title} />
+        <Grid container spacing={2}>
+          <Grid item xs={4}>
+            <AppTitle title={title} />
+          </Grid>
+          <Grid item xs={8}>
+            <ActiveTags />
+          </Grid>
+        </Grid>
       </Container>
       <Container>
         <Grid container spacing={2}>
