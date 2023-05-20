@@ -3,14 +3,14 @@ import MaterialReactTable from "material-react-table";
 import React, { useMemo } from "react";
 import { IData } from "../../types/interfaces";
 import { useSelectedTags } from "../../contexts/SelectedTagsContext";
+import { Chip, Container, Grid, Link } from "@mui/material";
 
 interface Props {
   data: IData[];
 }
 
 const ItemTable: React.FC<Props> = ({ data }) => {
-  const { selectedTags } = useSelectedTags();
-
+  const { selectedTags, setSelectedTags } = useSelectedTags();
   const filteredData = useMemo(() => {
     if (selectedTags.length === 0) {
       return data;
@@ -51,6 +51,18 @@ const ItemTable: React.FC<Props> = ({ data }) => {
     []
   );
 
+  const tagSelectHandler = (tag: string) => {
+    if (!selectedTags.includes(tag)) {
+      setSelectedTags((prevTags) => {
+        return prevTags.concat(tag);
+      });
+    } else {
+      setSelectedTags((prevTags) => {
+        return prevTags.filter((prevTag) => prevTag !== tag);
+      });
+    }
+  };
+
   if (!filteredData || filteredData.length === 0) {
     return <div>No data available to display</div>;
   }
@@ -62,6 +74,30 @@ const ItemTable: React.FC<Props> = ({ data }) => {
       enableRowSelection={false}
       enableColumnOrdering={true}
       enableGlobalFilter={true}
+      enableFullScreenToggle={false}
+      renderDetailPanel={({ row }) => (
+        <Container>
+          <p>
+            <strong>Title: </strong>
+            <Link href={`https://gams.uni-graz.at/${row.original.value}`}>
+              {row.original.txt}
+            </Link>
+          </p>
+          <Grid container spacing={0.5} wrap="wrap">
+            {row.original.tags.map((tag, index) => (
+              <Grid key={index} item xs="auto">
+                <Chip
+                  label={tag}
+                  size="small"
+                  sx={{ fontSize: "0.75rem" }}
+                  variant={selectedTags.includes(tag) ? "filled" : "outlined"}
+                  onClick={() => tagSelectHandler(tag)}
+                />
+              </Grid>
+            ))}
+          </Grid>
+        </Container>
+      )}
     />
   );
 };

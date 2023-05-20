@@ -5,11 +5,17 @@ import { getJson } from "./helpers/api-util";
 import { getFacets } from "./helpers/data-util";
 import ItemTable from "./components/table/ItemTable";
 import Facet from "./components/facet/Facet";
-import { Container, Grid } from "@mui/material";
+import { Container, createTheme, Grid, ThemeProvider } from "@mui/material";
 import { useSelectedTags } from "./contexts/SelectedTagsContext";
 import LoadingSpinner from "./components/ui/LoadingSpinner";
 import AppTitle from "./components/ui/AppTitle";
 import ActiveTags from "./components/ui/ActiveTags";
+
+const theme = createTheme({
+  typography: {
+    fontFamily: ["Inter", "sans-serif"].join(","),
+  },
+});
 
 function App() {
   const [data, setData] = React.useState<IAppData>();
@@ -56,7 +62,7 @@ function App() {
     fetchData();
   }, []);
   return (
-    <>
+    <ThemeProvider theme={theme}>
       <Container>
         <Grid container spacing={2}>
           <Grid item xs={4}>
@@ -85,7 +91,7 @@ function App() {
           </Grid>
         </Grid>
       </Container>
-    </>
+    </ThemeProvider>
   );
 }
 

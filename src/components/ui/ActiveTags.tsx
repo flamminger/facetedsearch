@@ -1,5 +1,5 @@
 import { useSelectedTags } from "../../contexts/SelectedTagsContext";
-import { Button, Container } from "@mui/material";
+import { Chip, Grid } from "@mui/material";
 
 const ActiveTags = () => {
   const { selectedTags, setSelectedTags } = useSelectedTags();
@@ -11,11 +11,17 @@ const ActiveTags = () => {
   };
 
   return (
-    <Container sx={{ pt: 1, pb: 1 }}>
-      {selectedTags.map((tag) => (
-        <Button onClick={() => removeTagHandler(tag)}>{tag}</Button>
+    <Grid container spacing={1} sx={{ pt: 1, pb: 1 }} wrap="wrap">
+      {selectedTags.map((tag, index) => (
+        <Grid key={index} item xs="auto">
+          <Chip
+            label={tag}
+            onClick={() => removeTagHandler(tag)}
+            variant="outlined"
+          />
+        </Grid>
       ))}
-    </Container>
+    </Grid>
   );
 };
 
