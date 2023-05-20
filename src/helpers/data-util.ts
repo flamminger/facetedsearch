@@ -1,4 +1,8 @@
-import { IAppData, IFacetConstraintMap, IUniqueTags } from "../types/interfaces";
+import {
+  IAppData,
+  IFacetConstraintMap,
+  IUniqueTags,
+} from "../types/interfaces";
 
 /**
  * gets facets from FacetConstraintMap

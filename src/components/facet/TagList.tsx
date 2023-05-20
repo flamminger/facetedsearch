@@ -3,7 +3,6 @@ import { Checkbox, FormControlLabel, List, ListItem } from "@mui/material";
 import { useSelectedTags } from "../../contexts/SelectedTagsContext";
 import { IOccurrence } from "../../types/interfaces";
 
-
 interface TagListProps {
   tags: IOccurrence[];
 }
