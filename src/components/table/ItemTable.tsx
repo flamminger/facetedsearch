@@ -3,7 +3,7 @@ import MaterialReactTable from "material-react-table";
 import React, { useMemo } from "react";
 import { IData } from "../../types/interfaces";
 import { useSelectedTags } from "../../contexts/SelectedTagsContext";
-import { Chip, Container, Grid, Link } from "@mui/material";
+import DetailPanel from "./DetailPanel";
 
 interface Props {
   data: IData[];
@@ -80,27 +80,11 @@ const ItemTable: React.FC<Props> = ({ data }) => {
       muiTableContainerProps={{ sx: { maxHeight: "50vh" } }}
       enableStickyHeader={true}
       renderDetailPanel={({ row }) => (
-        <Container>
-          <p>
-            <strong>Title: </strong>
-            <Link href={`https://gams.uni-graz.at/${row.original.value}`}>
-              {row.original.txt}
-            </Link>
-          </p>
-          <Grid container spacing={0.5} wrap="wrap">
-            {row.original.tags.map((tag, index) => (
-              <Grid key={index} item xs="auto">
-                <Chip
-                  label={tag}
-                  size="small"
-                  sx={{ fontSize: "0.75rem" }}
-                  variant={selectedTags.includes(tag) ? "filled" : "outlined"}
-                  onClick={() => tagSelectHandler(tag)}
-                />
-              </Grid>
-            ))}
-          </Grid>
-        </Container>
+        <DetailPanel
+          row={row}
+          selectedTags={selectedTags}
+          tagSelectHandler={tagSelectHandler}
+        />
       )}
     />
   );
