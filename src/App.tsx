@@ -27,12 +27,13 @@ function App() {
   }, [data]);
 
   const filteredData = useMemo(() => {
-    if (!data?.data?.data || selectedTags.length === 0) {
+    if (!data?.data?.data || selectedTags.size === 0) {
       return data?.data.data;
     }
 
     return data.data.data.filter((item) => {
-      return selectedTags.every((tag) => item.tags.includes(tag));
+      const currentTags = Array.from(selectedTags);
+      return currentTags.every((tag) => item.tags.includes(tag));
     });
   }, [data, selectedTags]);
 

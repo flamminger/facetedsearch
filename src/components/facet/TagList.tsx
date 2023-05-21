@@ -8,12 +8,12 @@ interface TagListProps {
 }
 
 const TagList: React.FC<TagListProps> = ({ tags }) => {
-  const { selectedTags, setSelectedTags } = useSelectedTags();
+  const { selectedTags, isTagSelected, removeTag, addTag } = useSelectedTags();
   const tagSelectHandler = (tag: string) => {
-    if (selectedTags.includes(tag)) {
-      setSelectedTags(selectedTags.filter((t) => t !== tag));
+    if (isTagSelected(tag)) {
+      removeTag(tag);
     } else {
-      setSelectedTags([...selectedTags, tag]);
+      addTag(tag);
     }
   };
   return (
@@ -24,7 +24,7 @@ const TagList: React.FC<TagListProps> = ({ tags }) => {
             key={tag.key}
             control={
               <Checkbox
-                checked={selectedTags.includes(tag.key)}
+                checked={selectedTags.has(tag.key)}
                 onChange={() => tagSelectHandler(tag.key)}
               />
             }

@@ -8,9 +8,9 @@ interface Props {
 }
 
 const FacetCategorySearch: React.FC<Props> = ({ tags }) => {
-  const { selectedTags, setSelectedTags } = useSelectedTags();
+  const { selectedTags, addTag } = useSelectedTags();
   const labels = Array.from(new Set(tags.map((tag) => tag.key))).filter(
-    (label) => !selectedTags.includes(label)
+    (label) => !selectedTags.has(label)
   );
   const [autocompleteValue, setAutocompleteValue] = React.useState<
     string | null
@@ -22,7 +22,7 @@ const FacetCategorySearch: React.FC<Props> = ({ tags }) => {
     value: string | null
   ) => {
     if (value) {
-      setSelectedTags([...selectedTags, value]);
+      addTag(value);
     }
     setTextFieldValue(""); // Clear the input after selection
     setAutocompleteValue(null); // Reset the value after selection

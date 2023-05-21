@@ -2,9 +2,12 @@ import React, { useContext, useState } from "react";
 
 // define context
 interface SelectedTagsContextProps {
-  selectedTags: string[];
-  setSelectedTags: React.Dispatch<React.SetStateAction<string[]>>;
+  selectedTags: Set<string>;
+  setSelectedTags: React.Dispatch<React.SetStateAction<Set<string>>>;
   clearSelectedTags: () => void;
+  addTag: (tag: string) => void;
+  removeTag: (tag: string) => void;
+  isTagSelected: (tag: string) => boolean;
 }
 
 const SelectedTagsContext = React.createContext<
@@ -30,15 +33,34 @@ interface SelectedTagsProviderProps {
 export const SelectedTagsProvider = ({
   children,
 }: SelectedTagsProviderProps) => {
-  const [selectedTags, setSelectedTags] = useState<string[]>([]);
+  const [selectedTags, setSelectedTags] = useState(new Set<string>());
 
   const clearSelectedTags = () => {
-    setSelectedTags([]);
+    setSelectedTags(new Set<string>());
   };
+
+  const addTag = (tag: string) =>
+    setSelectedTags((prevTags) => new Set(prevTags).add(tag));
+
+  const removeTag = (tag: string) =>
+    setSelectedTags((prevTags) => {
+      const newTags = new Set(prevTags);
+      newTags.delete(tag);
+      return newTags;
+    });
+
+  const isTagSelected = (tag: string) => selectedTags.has(tag);
 
   return (
     <SelectedTagsContext.Provider
-      value={{ selectedTags, setSelectedTags, clearSelectedTags }}
+      value={{
+        selectedTags,
+        setSelectedTags,
+        clearSelectedTags,
+        addTag,
+        removeTag,
+        isTagSelected,
+      }}
     >
       {children}
     </SelectedTagsContext.Provider>

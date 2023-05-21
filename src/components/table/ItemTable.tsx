@@ -10,14 +10,15 @@ interface Props {
 }
 
 const ItemTable: React.FC<Props> = ({ data }) => {
-  const { selectedTags, setSelectedTags } = useSelectedTags();
+  const { selectedTags, isTagSelected, addTag, removeTag } = useSelectedTags();
   const filteredData = useMemo(() => {
-    if (selectedTags.length === 0) {
+    if (selectedTags.size === 0) {
       return data;
     }
 
     return data.filter((item) => {
-      return selectedTags.every((tag) => item.tags.includes(tag));
+      const currentTags = Array.from(selectedTags);
+      return currentTags.every((tag) => item.tags.includes(tag));
     });
   }, [data, selectedTags]);
 
@@ -52,14 +53,10 @@ const ItemTable: React.FC<Props> = ({ data }) => {
   );
 
   const tagSelectHandler = (tag: string) => {
-    if (!selectedTags.includes(tag)) {
-      setSelectedTags((prevTags) => {
-        return prevTags.concat(tag);
-      });
+    if (isTagSelected(tag)) {
+      removeTag(tag);
     } else {
-      setSelectedTags((prevTags) => {
-        return prevTags.filter((prevTag) => prevTag !== tag);
-      });
+      addTag(tag);
     }
   };
 

@@ -5,7 +5,7 @@ import { IData } from "../../types/interfaces";
 
 interface Props {
   row: MRT_Row<IData>;
-  selectedTags: string[];
+  selectedTags: Set<string>;
   tagSelectHandler: (tag: string) => void;
 }
 
@@ -29,7 +29,7 @@ const DetailPanel: React.FC<Props> = ({
               label={tag}
               size="small"
               sx={{ fontSize: "0.75rem" }}
-              variant={selectedTags.includes(tag) ? "filled" : "outlined"}
+              variant={selectedTags.has(tag) ? "filled" : "outlined"}
               onClick={() => tagSelectHandler(tag)}
             />
           </Grid>
