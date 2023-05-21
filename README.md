@@ -1,7 +1,7 @@
 # Faceted Search
 
 Client-side faceted search
-using [ReactJS](https://github.com/facebook/react), [Material UI](https://github.com/mui/material-ui)
+using [React](https://github.com/facebook/react), [Material UI](https://github.com/mui/material-ui)
 and [React-Material-Table](https://github.com/KevinVandy/material-react-table).
 
 #### Input
