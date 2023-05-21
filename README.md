@@ -4,6 +4,8 @@ Client-side faceted search
 using [React](https://github.com/facebook/react), [Material UI](https://github.com/mui/material-ui)
 and [React-Material-Table](https://github.com/KevinVandy/material-react-table).
 
+Inspired by [ZIM Faceted Search](https://gams.uni-graz.at/webapps/drilldown/#/%2Frta1576%2Fjs%2Frta1576.json).
+
 #### Input
 
 accepts data in the format:
