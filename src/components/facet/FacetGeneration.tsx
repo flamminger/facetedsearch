@@ -1,12 +1,13 @@
 import {
-  IData,
   IAppData,
-  IUniqueTags,
-  IOccurrence,
+  IData,
   IDomainOccurrence,
+  IOccurrence,
   IRecord,
+  ITagOccurrence,
+  IUniqueTags,
 } from "../../types/interfaces";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { Box, Button, FormGroup } from "@mui/material";
 import FacetGroup from "./FacetGroup";
 import { useSelectedTags } from "../../contexts/SelectedTagsContext";
@@ -17,14 +18,21 @@ interface Props {
   filteredData: IData[] | undefined;
 }
 
-interface TagOccurrence {
-  [tag: string]: number;
-}
+const buttonStyle = {
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center",
+  p: "1rem",
+};
 
-const Facet: React.FC<Props> = ({ AppData, facets, filteredData }) => {
+const FacetGeneration: React.FC<Props> = ({
+  AppData,
+  facets,
+  filteredData,
+}) => {
   const [generalTags, setGeneralTags] = useState<IDomainOccurrence | null>();
   const [currentPage, setCurrentPage] = useState<IRecord>({});
-  const [tagOccurrenceMap, setTagOccurrenceMap] = useState<TagOccurrence>({});
+  const [tagOccurrenceMap, setTagOccurrenceMap] = useState<ITagOccurrence>({});
   const tagsPerPage: number = 5;
   const { selectedTags, clearSelectedTags } = useSelectedTags();
 
@@ -62,12 +70,12 @@ const Facet: React.FC<Props> = ({ AppData, facets, filteredData }) => {
     setGeneralTags(availableTags);
   }, [facets, tagOccurrenceMap]);
 
-  const pageChangeHandler = (category: string, page: number) => {
+  const pageChangeHandler = useCallback((category: string, page: number) => {
     setCurrentPage((prevState) => ({
       ...prevState,
       [category]: page,
     }));
-  };
+  }, []);
 
   return (
     <>
@@ -81,15 +89,7 @@ const Facet: React.FC<Props> = ({ AppData, facets, filteredData }) => {
           />
         )}
       </FormGroup>
-      <Box
-        component="div"
-        sx={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          p: "1rem",
-        }}
-      >
+      <Box component="div" sx={buttonStyle}>
         <Button variant="contained" size="large" onClick={clearSelectedTags}>
           Reset
         </Button>
@@ -97,4 +97,4 @@ const Facet: React.FC<Props> = ({ AppData, facets, filteredData }) => {
     </>
   );
 };
-export default Facet;
+export default FacetGeneration;

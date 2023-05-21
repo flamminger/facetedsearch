@@ -75,6 +75,10 @@ const ItemTable: React.FC<Props> = ({ data }) => {
       enableColumnOrdering={true}
       enableGlobalFilter={true}
       enableFullScreenToggle={false}
+      enableDensityToggle={false}
+      memoMode={"cells"}
+      muiTableContainerProps={{ sx: { maxHeight: "50vh" } }}
+      enableStickyHeader={true}
       renderDetailPanel={({ row }) => (
         <Container>
           <p>

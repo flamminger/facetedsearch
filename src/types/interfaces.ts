@@ -53,3 +53,7 @@ export interface IDomainOccurrence {
 export interface IRecord {
   [key: string]: number;
 }
+
+export interface ITagOccurrence {
+  [tag: string]: number;
+}

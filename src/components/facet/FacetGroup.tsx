@@ -1,5 +1,5 @@
 import { IDomainOccurrence, IRecord } from "../../types/interfaces";
-import React from "react";
+import React, { useCallback } from "react";
 import FacetCategory from "./FacetCategory";
 
 interface FacetGroupProps {
@@ -15,6 +15,20 @@ const FacetGroup: React.FC<FacetGroupProps> = ({
   tagsPerPage,
   pageChangeHandler,
 }) => {
+  const showMoreTagsHandler = useCallback(
+    (category: string) => {
+      pageChangeHandler(category, (currentPage[category] || 1) + 1);
+    },
+    [pageChangeHandler, currentPage]
+  );
+
+  const showLessTagsHandler = useCallback(
+    (category: string) => {
+      pageChangeHandler(category, (currentPage[category] || 1) - 1);
+    },
+    [pageChangeHandler, currentPage]
+  );
+
   return (
     <>
       {generalTags &&
@@ -24,21 +38,14 @@ const FacetGroup: React.FC<FacetGroupProps> = ({
             (currentPage[category] || 1) * tagsPerPage
           );
 
-          const showMoreTagsHandler = () => {
-            pageChangeHandler(category, (currentPage[category] || 1) + 1);
-          };
-          const showLessTagsHandler = () => {
-            pageChangeHandler(category, (currentPage[category] || 1) - 1);
-          };
-
           return (
             <FacetCategory
               key={category}
               categoryName={category}
               tags={categoryTags}
               categoryTags={tags}
-              onLoadMore={showMoreTagsHandler}
-              onLoadLess={showLessTagsHandler}
+              onLoadMore={() => showMoreTagsHandler(category)}
+              onLoadLess={() => showLessTagsHandler(category)}
             />
           );
         })}
@@ -46,4 +53,4 @@ const FacetGroup: React.FC<FacetGroupProps> = ({
   );
 };
 
-export default FacetGroup;
+export default React.memo(FacetGroup);

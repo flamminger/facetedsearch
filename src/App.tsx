@@ -3,13 +3,10 @@ import "./App.css";
 import { IAppData, IUniqueTags } from "./types/interfaces";
 import { getJson } from "./helpers/api-util";
 import { getFacets } from "./helpers/data-util";
-import ItemTable from "./components/table/ItemTable";
-import Facet from "./components/facet/Facet";
-import { Container, createTheme, Grid, ThemeProvider } from "@mui/material";
+import { createTheme, ThemeProvider } from "@mui/material";
 import { useSelectedTags } from "./contexts/SelectedTagsContext";
-import LoadingSpinner from "./components/ui/LoadingSpinner";
-import AppTitle from "./components/ui/AppTitle";
-import ActiveTags from "./components/ui/ActiveTags";
+import Head from "./components/layout/Head";
+import MainBody from "./components/layout/MainBody";
 
 const theme = createTheme({
   typography: {
@@ -63,34 +60,8 @@ function App() {
   }, []);
   return (
     <ThemeProvider theme={theme}>
-      <Container>
-        <Grid container spacing={2}>
-          <Grid item xs={4}>
-            <AppTitle title={title} />
-          </Grid>
-          <Grid item xs={8}>
-            <ActiveTags />
-          </Grid>
-        </Grid>
-      </Container>
-      <Container>
-        <Grid container spacing={2}>
-          <Grid item xs={4}>
-            {!data && <LoadingSpinner />}
-            {Object.keys(facets).length > 0 && data && (
-              <Facet
-                facets={facets}
-                AppData={data}
-                filteredData={filteredData}
-              />
-            )}
-          </Grid>
-          <Grid item xs={8}>
-            {!filteredData && <LoadingSpinner />}
-            {filteredData && <ItemTable data={filteredData} />}
-          </Grid>
-        </Grid>
-      </Container>
+      <Head title={title} />
+      <MainBody data={data} filteredData={filteredData} facets={facets} />
     </ThemeProvider>
   );
 }
