@@ -22,6 +22,20 @@ const DetailPanel: React.FC<Props> = ({
           {row.original.txt}
         </Link>
       </p>
+      <div>
+        <p>
+          <strong>From: </strong>
+          {row.original.date && row.original.date.startDate
+            ? new Date(row.original.date.startDate).toLocaleDateString()
+            : "NA"}
+        </p>
+        <p>
+          <strong>To: </strong>
+          {row.original.date && row.original.date.endDate
+            ? new Date(row.original.date.endDate).toLocaleDateString()
+            : "NA"}
+        </p>
+      </div>
       <Grid container spacing={0.5} wrap="wrap">
         {row.original.tags.map((tag, index) => (
           <Grid key={index} item xs="auto">

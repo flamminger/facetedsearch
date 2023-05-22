@@ -27,26 +27,7 @@ const ItemTable: React.FC<Props> = ({ data }) => {
       {
         header: "Title",
         accessorKey: "txt",
-      },
-      {
-        header: "DateRange: Start",
-        accessorFn: (row) => {
-          if (!row.date) {
-            return "NA";
-          } else if (row.date && row.date.startDate) {
-            return row.date.startDate;
-          }
-        },
-      },
-      {
-        header: "DateRange: End",
-        accessorFn: (row) => {
-          if (!row.date) {
-            return "NA";
-          } else if (row.date && row.date.endDate) {
-            return row.date.endDate;
-          }
-        },
+        size: 500,
       },
     ],
     []
@@ -60,10 +41,6 @@ const ItemTable: React.FC<Props> = ({ data }) => {
     }
   };
 
-  if (!filteredData || filteredData.length === 0) {
-    return <div>No data available to display</div>;
-  }
-
   return (
     <MaterialReactTable
       columns={columns}
@@ -74,7 +51,7 @@ const ItemTable: React.FC<Props> = ({ data }) => {
       enableFullScreenToggle={false}
       enableDensityToggle={false}
       memoMode={"cells"}
-      muiTableContainerProps={{ sx: { maxHeight: "50vh" } }}
+      muiTableContainerProps={{ sx: { maxHeight: "60vh" } }}
       enableStickyHeader={true}
       renderDetailPanel={({ row }) => (
         <DetailPanel
