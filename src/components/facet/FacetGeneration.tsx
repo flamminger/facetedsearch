@@ -8,14 +8,18 @@ import {
   IUniqueTags,
 } from "../../types/interfaces";
 import React, { useCallback, useEffect, useState } from "react";
-import { Box, Button, FormGroup } from "@mui/material";
+import { Box, Button, FormGroup, Slider } from "@mui/material";
 import FacetGroup from "./FacetGroup";
 import { useSelectedTags } from "../../contexts/SelectedTagsContext";
 
+// TODO CLEANUP PROP CHAIN
 interface Props {
   AppData: IAppData;
   facets: IUniqueTags;
   filteredData: IData[] | undefined;
+  dateRange: [number, number];
+  setDateRange: (dateRange: [number, number]) => void;
+  minMaxDate: [number, number];
 }
 
 const buttonStyle = {
@@ -29,10 +33,14 @@ const FacetGeneration: React.FC<Props> = ({
   AppData,
   facets,
   filteredData,
+  dateRange,
+  setDateRange,
+  minMaxDate,
 }) => {
   const [generalTags, setGeneralTags] = useState<IDomainOccurrence | null>();
   const [currentPage, setCurrentPage] = useState<IRecord>({});
   const [tagOccurrenceMap, setTagOccurrenceMap] = useState<ITagOccurrence>({});
+
   const tagsPerPage: number = 5;
   const { selectedTags, clearSelectedTags } = useSelectedTags();
 
@@ -88,9 +96,28 @@ const FacetGeneration: React.FC<Props> = ({
             pageChangeHandler={pageChangeHandler}
           />
         )}
+        {dateRange !== undefined && (
+          <Slider
+            value={dateRange}
+            min={minMaxDate[0]}
+            max={minMaxDate[1]}
+            onChange={(event, newValue) =>
+              setDateRange(newValue as [number, number])
+            }
+            valueLabelFormat={(x) => new Date(x).toLocaleDateString()}
+            valueLabelDisplay="auto"
+          />
+        )}
       </FormGroup>
       <Box component="div" sx={buttonStyle}>
-        <Button variant="contained" size="large" onClick={clearSelectedTags}>
+        <Button
+          variant="contained"
+          size="large"
+          onClick={() => {
+            clearSelectedTags();
+            setDateRange(minMaxDate);
+          }}
+        >
           Reset
         </Button>
       </Box>

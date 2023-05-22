@@ -17,6 +17,8 @@ const theme = createTheme({
 function App() {
   const [data, setData] = React.useState<IAppData>();
   const [facets, setFacets] = React.useState<IUniqueTags>({});
+  const [minMaxDate, setMinMaxDate] = React.useState<[number, number]>([0, 0]);
+  const [dateRange, setDateRange] = React.useState<[number, number]>([0, 0]);
   const { selectedTags } = useSelectedTags();
 
   const title = useMemo((): string => {
@@ -26,16 +28,59 @@ function App() {
     return "App Title";
   }, [data]);
 
+  useEffect(() => {
+    if (data) {
+      const dates = data.data.data.flatMap((item) => [
+        item.date?.startDate,
+        item.date?.endDate,
+      ]);
+      const validDates = dates
+        .map((dateString) => new Date(dateString).getTime())
+        .filter((timestamp) => !isNaN(timestamp));
+
+      if (validDates.length > 0) {
+        const minDate = Math.min(...validDates);
+        const maxDate = Math.max(...validDates);
+        setDateRange([minDate, maxDate]);
+        setMinMaxDate([minDate, maxDate]);
+      }
+    }
+  }, [data]);
+
   const filteredData = useMemo(() => {
-    if (!data?.data?.data || selectedTags.size === 0) {
+    if (selectedTags.size === 0 && dateRange[0] === 0 && dateRange[1] === 0) {
       return data?.data.data;
     }
 
-    return data.data.data.filter((item) => {
+    return data?.data.data.filter((item) => {
+      const itemStartDate = item.date?.startDate
+        ? new Date(item.date?.startDate).getTime()
+        : Infinity;
+      const itemEndDate = item.date?.endDate
+        ? new Date(item.date?.endDate).getTime()
+        : -Infinity;
+
+      const isWithinDateRange =
+        itemStartDate >= dateRange[0] && itemEndDate <= dateRange[1];
+
+      // Skip items without a start date or end date if the dateRange has been adjusted
+      const hasValidDates =
+        itemStartDate !== Infinity && itemEndDate !== -Infinity;
+      const shouldConsiderDates =
+        dateRange[0] !== minMaxDate[0] || dateRange[1] !== minMaxDate[1];
+
       const currentTags = Array.from(selectedTags);
-      return currentTags.every((tag) => item.tags.includes(tag));
+      const hasAllSelectedTags = currentTags.every((tag) =>
+        item.tags.includes(tag)
+      );
+
+      return (
+        (!shouldConsiderDates || hasValidDates) &&
+        isWithinDateRange &&
+        hasAllSelectedTags
+      );
     });
-  }, [data, selectedTags]);
+  }, [data, selectedTags, dateRange, minMaxDate]);
 
   /**
    * Fetch data from API
@@ -62,7 +107,14 @@ function App() {
   return (
     <ThemeProvider theme={theme}>
       <Head title={title} />
-      <MainBody data={data} filteredData={filteredData} facets={facets} />
+      <MainBody
+        data={data}
+        filteredData={filteredData}
+        facets={facets}
+        dateRange={dateRange}
+        setDateRange={setDateRange}
+        minMaxDate={minMaxDate}
+      />
     </ThemeProvider>
   );
 }

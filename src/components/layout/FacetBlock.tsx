@@ -8,9 +8,19 @@ interface Props {
   data: IAppData | undefined;
   filteredData: IData[] | undefined;
   facets: IUniqueTags;
+  dateRange: [number, number];
+  setDateRange: React.Dispatch<React.SetStateAction<[number, number]>>;
+  minMaxDate: [number, number];
 }
 
-const FacetBlock: React.FC<Props> = ({ data, filteredData, facets }) => {
+const FacetBlock: React.FC<Props> = ({
+  data,
+  filteredData,
+  facets,
+  dateRange,
+  setDateRange,
+  minMaxDate,
+}) => {
   return (
     <Grid item xs={12} md={4}>
       {!data && <LoadingSpinner />}
@@ -19,6 +29,9 @@ const FacetBlock: React.FC<Props> = ({ data, filteredData, facets }) => {
           facets={facets}
           AppData={data}
           filteredData={filteredData}
+          dateRange={dateRange}
+          setDateRange={setDateRange}
+          minMaxDate={minMaxDate}
         />
       )}
     </Grid>
