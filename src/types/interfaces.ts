@@ -11,17 +11,7 @@ export interface IData {
   tags: string[];
 }
 
-export interface IFacetConstraintMap extends IIndex {
-  Ort: string[];
-  Gruppe: string[];
-  "Diplomatische Form": string[];
-  Textsorte: string[];
-  Person: string[];
-  Sachbegriffe: string[];
-  Ressourcentyp: string[];
-}
-
-interface IIndex {
+export interface IIndex {
   [key: string]: string[];
 }
 
@@ -32,7 +22,7 @@ interface IGui {
 export interface IAppData {
   gui: IGui;
   data: {
-    facetConstraintMap: IFacetConstraintMap;
+    facetConstraintMap: IIndex;
     data: IData[];
   };
 }
