@@ -8,11 +8,11 @@ import {
   IUniqueTags,
 } from "../../types/interfaces";
 import React, { useCallback, useEffect, useState } from "react";
-import { Box, Button, FormGroup, Slider } from "@mui/material";
+import { Box, Button, FormGroup } from "@mui/material";
 import FacetGroup from "./FacetGroup";
 import { useSelectedTags } from "../../contexts/SelectedTagsContext";
+import DateSlider from "../ui/DateSlider";
 
-// TODO CLEANUP PROP CHAIN
 interface Props {
   AppData: IAppData;
   facets: IUniqueTags;
@@ -96,18 +96,11 @@ const FacetGeneration: React.FC<Props> = ({
             pageChangeHandler={pageChangeHandler}
           />
         )}
-        {dateRange !== undefined && (
-          <Slider
-            value={dateRange}
-            min={minMaxDate[0]}
-            max={minMaxDate[1]}
-            onChange={(event, newValue) =>
-              setDateRange(newValue as [number, number])
-            }
-            valueLabelFormat={(x) => new Date(x).toLocaleDateString()}
-            valueLabelDisplay="auto"
-          />
-        )}
+        <DateSlider
+          dateRange={dateRange}
+          setDateRange={setDateRange}
+          minMaxDate={minMaxDate}
+        />
       </FormGroup>
       <Box component="div" sx={buttonStyle}>
         <Button
