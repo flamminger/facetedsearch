@@ -6,7 +6,7 @@ and [React-Material-Table](https://github.com/KevinVandy/material-react-table).
 
 Inspired by [ZIM Faceted Search](https://gams.uni-graz.at/webapps/drilldown/#/%2Frta1576%2Fjs%2Frta1576.json).
 
-![image](https://github.com/flamminger/facetedsearch/assets/101122248/625462da-4ce9-417b-b8d2-a48b8a555f6d)
+![image](https://github.com/flamminger/facetedsearch/assets/101122248/6443b4ab-11a0-419c-b65d-68842182b44f)
 
 
 #### Input
