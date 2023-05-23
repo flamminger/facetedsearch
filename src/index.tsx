@@ -4,6 +4,7 @@ import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { SelectedTagsProvider } from "./contexts/SelectedTagsContext";
+import { HashRouter as Router, Routes, Route } from "react-router-dom";
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
@@ -11,7 +12,11 @@ const root = ReactDOM.createRoot(
 root.render(
   <React.StrictMode>
     <SelectedTagsProvider>
-      <App />
+      <Router>
+        <Routes>
+          <Route path=":fileUrl/:preSelectedTag?" element={<App />} />
+        </Routes>
+      </Router>
     </SelectedTagsProvider>
   </React.StrictMode>
 );

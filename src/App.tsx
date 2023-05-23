@@ -7,6 +7,7 @@ import { createTheme, ThemeProvider } from "@mui/material";
 import { useSelectedTags } from "./contexts/SelectedTagsContext";
 import Head from "./components/layout/Head";
 import MainBody from "./components/layout/MainBody";
+import { useParams } from "react-router-dom";
 
 const theme = createTheme({
   typography: {
@@ -19,7 +20,41 @@ function App() {
   const [facets, setFacets] = React.useState<IUniqueTags>({});
   const [minMaxDate, setMinMaxDate] = React.useState<[number, number]>([0, 0]);
   const [dateRange, setDateRange] = React.useState<[number, number]>([0, 0]);
-  const { selectedTags } = useSelectedTags();
+  const { selectedTags, addTag } = useSelectedTags();
+
+  const { fileUrl, preSelectedTag } = useParams<{
+    fileUrl: string | undefined;
+    preSelectedTag: string | undefined;
+  }>();
+
+  /**
+   * Fetch data from API
+   */
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const data: IAppData = await getJson(fileUrl as string);
+        if (data) {
+          setData(data);
+          const facets = getFacets(data);
+          setFacets(facets);
+        }
+      } catch (error) {
+        if (error instanceof Error) {
+          throw new Error(`Failed to fetch JSON ${error.message}`);
+        } else {
+          throw new Error("Something went wrong!");
+        }
+      }
+    };
+    if (fileUrl !== undefined) {
+      fetchData();
+    }
+
+    if (preSelectedTag) {
+      addTag(preSelectedTag);
+    }
+  }, []);
 
   const title = useMemo((): string => {
     if (data && data.gui && data.gui.appTitle) {
@@ -82,28 +117,6 @@ function App() {
     });
   }, [data, selectedTags, dateRange, minMaxDate]);
 
-  /**
-   * Fetch data from API
-   */
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const data: IAppData = await getJson("/api/rta.json");
-        if (data) {
-          setData(data);
-          const facets = getFacets(data);
-          setFacets(facets);
-        }
-      } catch (error) {
-        if (error instanceof Error) {
-          throw new Error(`Failed to fetch JSON ${error.message}`);
-        } else {
-          throw new Error("Something went wrong!");
-        }
-      }
-    };
-    fetchData();
-  }, []);
   return (
     <ThemeProvider theme={theme}>
       <Head title={title} />
