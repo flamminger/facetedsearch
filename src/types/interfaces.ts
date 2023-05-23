@@ -47,3 +47,8 @@ export interface IRecord {
 export interface ITagOccurrence {
   [tag: string]: number;
 }
+
+export interface IErrorMessage {
+  occurred: boolean;
+  message: string;
+}

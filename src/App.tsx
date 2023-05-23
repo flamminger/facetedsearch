@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo } from "react";
 import "./App.css";
-import { IAppData, IUniqueTags } from "./types/interfaces";
+import { IAppData, IErrorMessage, IUniqueTags } from "./types/interfaces";
 import { getJson } from "./helpers/api-util";
 import { getFacets } from "./helpers/data-util";
 import { createTheme, ThemeProvider } from "@mui/material";
@@ -8,6 +8,7 @@ import { useSelectedTags } from "./contexts/SelectedTagsContext";
 import Head from "./components/layout/Head";
 import MainBody from "./components/layout/MainBody";
 import { useParams } from "react-router-dom";
+import Error from "./components/ui/Error";
 
 const theme = createTheme({
   typography: {
@@ -17,6 +18,9 @@ const theme = createTheme({
 
 function App() {
   const [data, setData] = React.useState<IAppData>();
+  const [encounteredError, setEncounteredError] = React.useState<IErrorMessage>(
+    { occurred: false, message: "" }
+  );
   const [facets, setFacets] = React.useState<IUniqueTags>({});
   const [minMaxDate, setMinMaxDate] = React.useState<[number, number]>([0, 0]);
   const [dateRange, setDateRange] = React.useState<[number, number]>([0, 0]);
@@ -40,11 +44,11 @@ function App() {
           setFacets(facets);
         }
       } catch (error) {
-        if (error instanceof Error) {
-          throw new Error(`Failed to fetch JSON ${error.message}`);
-        } else {
-          throw new Error("Something went wrong!");
-        }
+        setEncounteredError({
+          occurred: true,
+          message: `Failed to fetch JSON ${error}`,
+        });
+        console.error(`Failed to fetch JSON ${error}`);
       }
     };
     if (fileUrl !== undefined) {
@@ -56,6 +60,9 @@ function App() {
     }
   }, []);
 
+  /**
+   * Set page title
+   */
   const title = useMemo((): string => {
     if (data && data.gui && data.gui.appTitle) {
       return data.gui.appTitle;
@@ -63,6 +70,9 @@ function App() {
     return "App Title";
   }, [data]);
 
+  /**
+   * Set date range
+   */
   useEffect(() => {
     if (data) {
       const dates = data.data.data.flatMap((item) => [
@@ -82,6 +92,9 @@ function App() {
     }
   }, [data]);
 
+  /**
+   * Filter data based on selected tags and date range
+   */
   const filteredData = useMemo(() => {
     if (selectedTags.size === 0 && dateRange[0] === 0 && dateRange[1] === 0) {
       return data?.data.data;
@@ -119,15 +132,21 @@ function App() {
 
   return (
     <ThemeProvider theme={theme}>
-      <Head title={title} />
-      <MainBody
-        data={data}
-        filteredData={filteredData}
-        facets={facets}
-        dateRange={dateRange}
-        setDateRange={setDateRange}
-        minMaxDate={minMaxDate}
-      />
+      {encounteredError.occurred ? (
+        <Error error={encounteredError.message} />
+      ) : (
+        <>
+          <Head title={title} />
+          <MainBody
+            data={data}
+            filteredData={filteredData}
+            facets={facets}
+            dateRange={dateRange}
+            setDateRange={setDateRange}
+            minMaxDate={minMaxDate}
+          />
+        </>
+      )}
     </ThemeProvider>
   );
 }

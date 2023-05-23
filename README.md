@@ -8,6 +8,7 @@ Inspired by [ZIM Faceted Search](https://gams.uni-graz.at/webapps/drilldown/#/%2
 
 #### Input
 
+Path can be set in the App component.
 accepts data in the format:
 
 ```json
