@@ -9,6 +9,8 @@ It allows users to filter through a set of data using various attributes (facets
 
 Inspired by [ZIM Faceted Search](https://gams.uni-graz.at/webapps/drilldown/#/%2Frta1576%2Fjs%2Frta1576.json).
 
+[Demo](https://flamminger.github.io/facetedsearch/)
+
 #### Input
 
 Path can be set in the App component.
