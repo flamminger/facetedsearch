@@ -27,5 +27,5 @@ yarn-error.log*
 /.idea/
 /.vscode/
 /public/api/sample.json
-/public/api/rta.json
 /public/data.json
+/public/api/rta.json

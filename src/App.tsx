@@ -52,8 +52,8 @@ function App() {
    * Set page title
    */
   const title = useMemo((): string => {
-    if (data && data.gui && data.gui) {
-      return data.gui;
+    if (data && data.gui && data.gui.appTitle) {
+      return data.gui.appTitle;
     }
     return "App Title";
   }, [data]);

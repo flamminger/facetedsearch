@@ -18,7 +18,7 @@ const DetailPanel: React.FC<Props> = ({
     <Container>
       <p>
         <strong>Title: </strong>
-        <Link href={`https://gams.uni-graz.at/${row.original.value}`}>
+        <Link href={row.original.value} target="_blank">
           {row.original.txt}
         </Link>
       </p>

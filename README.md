@@ -16,7 +16,9 @@ accepts data in the format:
 
 ```json
 {
-  "gui": "appTitle",
+  "gui": {
+    "appTitle": "App Title"
+  },
   "data": {
     "facetConstraintMap": {
       "facet1": [

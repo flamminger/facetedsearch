@@ -15,12 +15,12 @@ export interface IIndex {
   [key: string]: string[];
 }
 
-// interface IGui {
-//   appTitle: string;
-// }
+interface IGui {
+  appTitle: string;
+}
 
 export interface IAppData {
-  gui: string;
+  gui: IGui;
   data: {
     facetConstraintMap: IIndex;
     data: IData[];
