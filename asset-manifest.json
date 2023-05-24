@@ -1,0 +1,17 @@
+{
+  "files": {
+    "main.css": "/facetedsearch/static/css/main.e4f1551a.css",
+    "main.js": "/facetedsearch/static/js/main.c2fcfd8c.js",
+    "static/js/787.b251bc31.chunk.js": "/facetedsearch/static/js/787.b251bc31.chunk.js",
+    "static/media/inter-v12-latin-regular.woff": "/facetedsearch/static/media/inter-v12-latin-regular.817c4274293e221c5076.woff",
+    "static/media/inter-v12-latin-regular.woff2": "/facetedsearch/static/media/inter-v12-latin-regular.be7cb18dc7caf47cf7e9.woff2",
+    "index.html": "/facetedsearch/index.html",
+    "main.e4f1551a.css.map": "/facetedsearch/static/css/main.e4f1551a.css.map",
+    "main.c2fcfd8c.js.map": "/facetedsearch/static/js/main.c2fcfd8c.js.map",
+    "787.b251bc31.chunk.js.map": "/facetedsearch/static/js/787.b251bc31.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.e4f1551a.css",
+    "static/js/main.c2fcfd8c.js"
+  ]
+}
