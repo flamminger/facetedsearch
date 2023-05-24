@@ -28,3 +28,4 @@ yarn-error.log*
 /.vscode/
 /public/api/sample.json
 /public/api/rta.json
+/public/data.json

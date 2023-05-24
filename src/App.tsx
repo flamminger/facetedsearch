@@ -31,7 +31,7 @@ function App() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const data: IAppData = await getJson("/api/rta.json"); // set path to your data here
+        const data: IAppData = await getJson("/data.json"); // set path to your data here
         if (data) {
           setData(data);
           const facets = getFacets(data);
@@ -52,8 +52,8 @@ function App() {
    * Set page title
    */
   const title = useMemo((): string => {
-    if (data && data.gui && data.gui.appTitle) {
-      return data.gui.appTitle;
+    if (data && data.gui && data.gui) {
+      return data.gui;
     }
     return "App Title";
   }, [data]);
