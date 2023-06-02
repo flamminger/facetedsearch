@@ -12,14 +12,3 @@ export const getFacets = (data: IAppData): IUniqueTags => {
   }
   return facets;
 };
-
-/**
- * remove duplicates from item tags
- * @param data
- */
-export const preprocessData = (data: IAppData): IAppData => {
-  data.data.data.forEach((item) => {
-    item.tags = Array.from(new Set(item.tags));
-  });
-  return data;
-};
