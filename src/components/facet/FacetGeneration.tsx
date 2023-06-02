@@ -8,10 +8,11 @@ import {
   IUniqueTags,
 } from "../../types/interfaces";
 import React, { useCallback, useEffect, useState } from "react";
-import { Box, Button, FormGroup } from "@mui/material";
+import { Box, Button, Container, FormGroup } from "@mui/material";
 import FacetGroup from "./FacetGroup";
 import { useSelectedTags } from "../../contexts/SelectedTagsContext";
 import DateSlider from "../ui/DateSlider";
+import DateSelect from "../ui/DateSelect";
 
 interface Props {
   AppData: IAppData;
@@ -40,7 +41,12 @@ const FacetGeneration: React.FC<Props> = ({
   const [generalTags, setGeneralTags] = useState<IDomainOccurrence | null>();
   const [currentPage, setCurrentPage] = useState<IRecord>({});
   const [tagOccurrenceMap, setTagOccurrenceMap] = useState<ITagOccurrence>({});
-
+  const [startDate, setStartDate] = useState(
+    new Date(minMaxDate[0]).toISOString().slice(0, 10)
+  );
+  const [endDate, setEndDate] = useState(
+    new Date(minMaxDate[1]).toISOString().slice(0, 10)
+  );
   const tagsPerPage: number = 5;
   const { selectedTags, clearSelectedTags } = useSelectedTags();
 
@@ -78,6 +84,11 @@ const FacetGeneration: React.FC<Props> = ({
     setGeneralTags(availableTags);
   }, [facets, tagOccurrenceMap]);
 
+  useEffect(() => {
+    setStartDate(new Date(minMaxDate[0]).toISOString().slice(0, 10));
+    setEndDate(new Date(minMaxDate[1]).toISOString().slice(0, 10));
+  }, [minMaxDate]);
+
   const pageChangeHandler = useCallback((category: string, page: number) => {
     setCurrentPage((prevState) => ({
       ...prevState,
@@ -96,11 +107,21 @@ const FacetGeneration: React.FC<Props> = ({
             pageChangeHandler={pageChangeHandler}
           />
         )}
-        <DateSlider
-          dateRange={dateRange}
-          setDateRange={setDateRange}
-          minMaxDate={minMaxDate}
-        />
+        <Container>
+          <DateSlider
+            dateRange={dateRange}
+            setDateRange={setDateRange}
+            minMaxDate={minMaxDate}
+          />
+          <DateSelect
+            startDate={startDate}
+            endDate={endDate}
+            dateRange={dateRange}
+            setDateRange={setDateRange}
+            setStartDate={setStartDate}
+            setEndDate={setEndDate}
+          />
+        </Container>
       </FormGroup>
       <Box component="div" sx={buttonStyle}>
         <Button
@@ -109,6 +130,8 @@ const FacetGeneration: React.FC<Props> = ({
           onClick={() => {
             clearSelectedTags();
             setDateRange(minMaxDate);
+            setStartDate(new Date(minMaxDate[0]).toISOString().slice(0, 10));
+            setEndDate(new Date(minMaxDate[1]).toISOString().slice(0, 10));
           }}
         >
           Reset

@@ -52,7 +52,6 @@ const FacetCategory: React.FC<FacetCategoryProps> = ({
         <Container>
           <FacetCategorySearch tags={categoryTags} />
           <TagList tags={categoryTags} />
-
           <Box display="flex" justifyContent="space-between">
             {categoryTags.length > tags.length && (
               <Button variant="contained" size="small" onClick={onLoadMore}>
