@@ -1,4 +1,4 @@
-import { Container, Grid } from "@mui/material";
+import { Grid } from "@mui/material";
 import FacetBlock from "./FacetBlock";
 import TableBlock from "./TableBlock";
 import React from "react";
@@ -22,19 +22,17 @@ const MainBody: React.FC<Props> = ({
   minMaxDate,
 }) => {
   return (
-    <Container>
-      <Grid container spacing={2}>
-        <FacetBlock
-          data={data}
-          filteredData={filteredData}
-          facets={facets}
-          dateRange={dateRange}
-          setDateRange={setDateRange}
-          minMaxDate={minMaxDate}
-        />
-        <TableBlock filteredData={filteredData} />
-      </Grid>
-    </Container>
+    <Grid container spacing={2}>
+      <FacetBlock
+        data={data}
+        filteredData={filteredData}
+        facets={facets}
+        dateRange={dateRange}
+        setDateRange={setDateRange}
+        minMaxDate={minMaxDate}
+      />
+      <TableBlock filteredData={filteredData} />
+    </Grid>
   );
 };
 
