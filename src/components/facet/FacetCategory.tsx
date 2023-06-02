@@ -4,6 +4,7 @@ import {
   AccordionSummary,
   Box,
   Button,
+  Chip,
   Container,
   Typography,
 } from "@mui/material";
@@ -37,12 +38,21 @@ const FacetCategory: React.FC<FacetCategoryProps> = ({
         aria-controls="panel1a-content"
         id="panel1a-header"
       >
-        <Typography variant="h6">{categoryName}</Typography>
+        <Box display="flex" justifyContent="space-between" width="100%">
+          <Typography variant="h6" sx={{ pl: 1 }}>
+            {categoryName}{" "}
+          </Typography>
+          <Chip
+            label={tags.reduce((acc, cur) => acc + cur.value, 0)}
+            sx={{ mr: 1 }}
+          ></Chip>
+        </Box>
       </AccordionSummary>
       <AccordionDetails>
-        <FacetCategorySearch tags={categoryTags} />
-        <TagList tags={tags} />
         <Container>
+          <FacetCategorySearch tags={categoryTags} />
+          <TagList tags={categoryTags} />
+
           <Box display="flex" justifyContent="space-between">
             {categoryTags.length > tags.length && (
               <Button variant="contained" size="small" onClick={onLoadMore}>
