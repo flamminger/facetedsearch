@@ -55,7 +55,10 @@ function App() {
       fetchData();
     }
 
-    if (preSelectedTag) {
+    if (preSelectedTag?.includes("|")) {
+      const tags = preSelectedTag.split("|");
+      tags.forEach((tag) => addTag(tag));
+    } else if (preSelectedTag && !preSelectedTag.includes("|")) {
       addTag(preSelectedTag);
     }
   }, []);
