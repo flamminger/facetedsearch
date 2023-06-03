@@ -10,6 +10,26 @@ import MainBody from "./components/layout/MainBody";
 import { useParams } from "react-router-dom";
 import Error from "./components/ui/Error";
 
+/**
+ * This is the root component of the application, App, which is a functional component.
+ *
+ * The component fetches data from an API using the useEffect hook, stores the data in a
+ * state variable, and provides the data to the child components. It also handles any errors
+ * that might occur during the data fetching process.
+ *
+ * The App component is wrapped with a ThemeProvider component from the Material-UI library
+ * to provide theme settings to all child components.
+ *
+ * Additionally, the App component calculates and stores a min and max date from the fetched data
+ * and provides it to the MainBody component. The MainBody component can then manipulate these dates
+ * to filter items based on their start and end dates.
+ *
+ * It also has useMemo to filter data based on selected tags and a given date range.
+ *
+ * If there's an error while fetching data, the Error component is rendered with the error message.
+ * If there's no error, the Head and MainBody components are rendered.
+ */
+
 const theme = createTheme({
   typography: {
     fontFamily: ["Inter", "sans-serif"].join(","),
@@ -54,14 +74,16 @@ function App() {
     if (fileUrl !== undefined) {
       fetchData();
     }
-
+    /**
+     * Add pre-selected tag to selected tags context
+     */
     if (preSelectedTag?.includes("|")) {
       const tags = preSelectedTag.split("|");
       tags.forEach((tag) => addTag(tag));
     } else if (preSelectedTag && !preSelectedTag.includes("|")) {
       addTag(preSelectedTag);
     }
-  }, []);
+  }, [addTag, fileUrl, preSelectedTag]);
 
   /**
    * Set page title

@@ -7,6 +7,14 @@ interface Props {
   minMaxDate: [number, number];
 }
 
+/**
+ * `DateSlider` component provides a slider interface for selecting a date range.
+ *
+ * @component
+ * @prop {[number, number]} dateRange - The currently selected date range.
+ * @prop {(dateRange: [number, number]) => void} setDateRange - Function to set the selected date range.
+ * @prop {[number, number]} minMaxDate - The minimum and maximum dates that can be selected.
+ */
 const DateSlider: React.FC<Props> = ({
   dateRange,
   setDateRange,

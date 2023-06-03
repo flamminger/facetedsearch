@@ -7,6 +7,14 @@ interface Props {
   tags: IOccurrence[];
 }
 
+/**
+ * `FacetCategorySearch` component is a search bar for selecting tags in a particular category.
+ * This component uses Autocomplete from Material UI and is used in the context of a faceted search UI.
+ * It makes use of the `SelectedTagsContext` to manage the tags that are selected.
+ *
+ * @component
+ * @prop {IOccurrence[]} tags - List of tags available for this category.
+ */
 const FacetCategorySearch: React.FC<Props> = ({ tags }) => {
   const { selectedTags, addTag } = useSelectedTags();
   const labels = Array.from(new Set(tags.map((tag) => tag.key))).filter(

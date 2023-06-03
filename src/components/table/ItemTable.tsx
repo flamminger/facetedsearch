@@ -9,6 +9,29 @@ interface Props {
   data: IData[];
 }
 
+/**
+ * The ItemTable component renders a table of items with Material-UI based table.
+ *
+ * Props:
+ * - data: An array of IData objects to be displayed in the table.
+ *
+ * This component uses the context from SelectedTagsContext for selected tags,
+ * functions to add and remove tags, and to check if a tag is selected.
+ *
+ * With the useMemo hook, filteredData is computed as the items that include every tag in selectedTags.
+ * If no tags are selected, all items are returned.
+ *
+ * It defines columns for the MaterialReactTable, with a single column for the title of the item.
+ *
+ * It also provides a tagSelectHandler function that either adds or removes a tag from the selection
+ * based on whether it is currently selected.
+ *
+ * The MaterialReactTable component from the 'material-react-table' library is used to create the table.
+ * The table includes a global filter and sticky headers, but does not include other options
+ * such as row selection, column ordering, full-screen toggle, density toggle, column dragging, or hiding.
+ * The detail panel for each row is rendered with the DetailPanel component,
+ * passing the row data, the selected tags, and the tagSelectHandler function as props.
+ */
 const ItemTable: React.FC<Props> = ({ data }) => {
   const { selectedTags, isTagSelected, addTag, removeTag } = useSelectedTags();
   const filteredData = useMemo(() => {

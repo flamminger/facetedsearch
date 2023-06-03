@@ -9,6 +9,18 @@ interface Props {
   setEndDate: (endDate: string) => void;
 }
 
+/**
+ * `DateField` component displays two date input fields for selecting a start and end date.
+ * On each change, it validates the input and if valid, updates the `dateRange` state variable in the parent component.
+ *
+ * @component
+ * @prop {[number, number]} dateRange - The selected date range.
+ * @prop {(dateRange: [number, number]) => void} setDateRange - Function to set the selected date range.
+ * @prop {string} startDate - The selected start date.
+ * @prop {string} endDate - The selected end date.
+ * @prop {(startDate: string) => void} setStartDate - Function to set the selected start date.
+ * @prop {(endDate: string) => void} setEndDate - Function to set the selected end date.
+ */
 const DateField: React.FC<Props> = ({
   dateRange,
   setDateRange,
@@ -17,6 +29,12 @@ const DateField: React.FC<Props> = ({
   setStartDate,
   setEndDate,
 }) => {
+  /**
+   * Handles the change in the start date input field.
+   * Validates the input and if valid, updates the `dateRange` and `startDate` state variables.
+   *
+   * @param {string} startDate - The selected start date.
+   */
   const startDateChangeHandler = (startDate: string) => {
     const date = new Date(startDate);
     if (!isNaN(date.getTime())) {
@@ -25,6 +43,12 @@ const DateField: React.FC<Props> = ({
     }
   };
 
+  /**
+   * Handles the change in the end date input field.
+   * Validates the input and if valid, updates the `dateRange` and `endDate` state variables.
+   *
+   * @param {string} endDate - The selected end date.
+   */
   const endDateChangeHandler = (endDate: string) => {
     const date = new Date(endDate);
     if (!isNaN(date.getTime())) {

@@ -9,6 +9,17 @@ interface FacetGroupProps {
   pageChangeHandler: (category: string, page: number) => void;
 }
 
+/**
+ * `FacetGroup` is a component that represents a group of facet categories used in a faceted search UI.
+ * Each facet category has its tags, and each tag displays its occurrence in the dataset.
+ * This component also provides the capability to show more or less tags per category, controlling the pagination.
+ *
+ * @component
+ * @prop {IDomainOccurrence} generalTags - A mapping of the facet category to its tags with occurrences in the dataset.
+ * @prop {IRecord} currentPage - A record that stores the current page of tags displayed for each category.
+ * @prop {number} tagsPerPage - The maximum number of tags to be displayed per category per page.
+ * @prop {(category: string, page: number) => void} pageChangeHandler - A handler function for changing the page of tags in a category.
+ */
 const FacetGroup: React.FC<FacetGroupProps> = ({
   generalTags,
   currentPage,

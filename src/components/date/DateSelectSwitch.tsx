@@ -13,6 +13,22 @@ interface Props {
   setEndDate: (endDate: string) => void;
 }
 
+/**
+ * `DateSelectSwitch` component provides the user with the ability to switch between two date selection methods:
+ * 1. Input fields for direct date entry (default)
+ * 2. A date range slider
+ *
+ * Depending on the toggle switch state, it either renders the `DateField` or `DateSlider` component.
+ *
+ * @component
+ * @prop {[number, number]} dateRange - The currently selected date range.
+ * @prop {(dateRange: [number, number]) => void} setDateRange - Function to set the selected date range.
+ * @prop {[number, number]} minMaxDate - The minimum and maximum dates that can be selected.
+ * @prop {string} startDate - The selected start date.
+ * @prop {string} endDate - The selected end date.
+ * @prop {(startDate: string) => void} setStartDate - Function to set the selected start date.
+ * @prop {(endDate: string) => void} setEndDate - Function to set the selected end date.
+ */
 const DateSelectSwitch: React.FC<Props> = ({
   dateRange,
   setDateRange,
@@ -24,6 +40,12 @@ const DateSelectSwitch: React.FC<Props> = ({
 }) => {
   const [isSlider, setIsSlider] = useState<boolean>(false);
 
+  /**
+   * Handles the state change of the toggle switch.
+   * When toggled, it updates the `isSlider` state to reflect the current selection method.
+   *
+   * @param {React.ChangeEvent<HTMLInputElement>} event - The change event from the toggle switch.
+   */
   const SwitchChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     setIsSlider(event.target.checked);
   };

@@ -24,6 +24,20 @@ interface FacetCategoryProps {
   onLoadLess: () => void;
 }
 
+/**
+ * `FacetCategory` component represents a single category in a faceted search UI.
+ * This component includes a summary (which includes the category name and total number of tags),
+ * an accordion for expanding/collapsing the detailed view,
+ * a search bar for searching within the category,
+ * and buttons for loading more or less tags in the category.
+ *
+ * @component
+ * @prop {string} categoryName - Name of the category.
+ * @prop {IOccurrence[]} categoryTags - List of tags under this category.
+ * @prop {IOccurrence[]} tags - Current list of tags shown in the category.
+ * @prop {() => void} onLoadMore - Function to handle loading more tags.
+ * @prop {() => void} onLoadLess - Function to handle loading less tags.
+ */
 const FacetCategory: React.FC<FacetCategoryProps> = ({
   categoryName,
   categoryTags,

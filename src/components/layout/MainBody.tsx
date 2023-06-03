@@ -13,6 +13,22 @@ interface Props {
   minMaxDate: [number, number];
 }
 
+/**
+ * The MainBody component serves as a container for the FacetBlock and TableBlock components.
+ * This is where the core interactive functionality of the application is rendered.
+ *
+ * Props:
+ * - data: The main dataset that the app is working with.
+ * - filteredData: A subset of the main dataset after applying filters.
+ * - facets: The facets data used to filter the main dataset.
+ * - dateRange: The current date range applied to the main dataset.
+ * - setDateRange: A function to set the date range.
+ * - minMaxDate: The minimum and maximum date of the main dataset.
+ *
+ * This component uses the Grid container from Material-UI to lay out its child components in a responsive manner.
+ * It passes down the necessary props to FacetBlock and TableBlock. On smaller screens, these components will stack vertically.
+ * On larger screens, they will be positioned side by side.
+ */
 const MainBody: React.FC<Props> = ({
   data,
   facets,

@@ -29,6 +29,19 @@ const buttonStyle = {
   p: "1rem",
 };
 
+/**
+ * `FacetGeneration` component generates the facet filters for the dataset.
+ * It calculates the occurrence of each tag and the date range and passes
+ * them to the `FacetGroup` and `DateSelectSwitch` components respectively.
+ *
+ * @component
+ * @prop {IAppData} AppData - The entire application data.
+ * @prop {IUniqueTags} facets - Unique tags in the data.
+ * @prop {IData[] | undefined} filteredData - Filtered data based on selected tags and date range.
+ * @prop {[number, number]} dateRange - The selected date range.
+ * @prop {(dateRange: [number, number]) => void} setDateRange - Function to set the selected date range.
+ * @prop {[number, number]} minMaxDate - Minimum and maximum dates in the data.
+ */
 const FacetGeneration: React.FC<Props> = ({
   AppData,
   facets,
@@ -49,6 +62,9 @@ const FacetGeneration: React.FC<Props> = ({
   const tagsPerPage: number = 5;
   const { selectedTags, clearSelectedTags } = useSelectedTags();
 
+  /**
+   * Calculates the tag occurrence map for the current data and selected tags
+   */
   useEffect(() => {
     const newTagOccurrenceMap: { [tag: string]: number } = {};
     if (filteredData) {
@@ -63,6 +79,9 @@ const FacetGeneration: React.FC<Props> = ({
     setTagOccurrenceMap(newTagOccurrenceMap);
   }, [AppData.data.data, selectedTags, filteredData]);
 
+  /**
+   * Calculates the occurrence of each tag and sorts them by occurrence
+   */
   useEffect(() => {
     const availableTags: IDomainOccurrence = {};
 
@@ -83,6 +102,9 @@ const FacetGeneration: React.FC<Props> = ({
     setGeneralTags(availableTags);
   }, [facets, tagOccurrenceMap]);
 
+  /**
+   * Updates the start and end dates whenever the minimum and maximum dates change
+   */
   useEffect(() => {
     setStartDate(new Date(minMaxDate[0]).toISOString().slice(0, 10));
     setEndDate(new Date(minMaxDate[1]).toISOString().slice(0, 10));

@@ -1,4 +1,3 @@
-// globally used interfaces
 export interface IDateRange {
   startDate: string;
   endDate: string;

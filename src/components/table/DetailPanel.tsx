@@ -9,6 +9,21 @@ interface Props {
   tagSelectHandler: (tag: string) => void;
 }
 
+/**
+ * The DetailPanel component renders the detailed information of a row item.
+ * The details include the title of the item, start and end dates, and a list of tags.
+ *
+ * Props:
+ * - row: A row object that contains original item data.
+ * - selectedTags: A set of currently selected tags.
+ * - tagSelectHandler: A function to handle tag selection.
+ *
+ * This component makes use of the Container and Grid components from Material-UI for layout purposes.
+ *
+ * It also uses the Chip component to present each tag associated with an item.
+ * The variant of the Chip (either filled or outlined) is determined by whether the tag is currently selected.
+ * Clicking on a Chip triggers the tagSelectHandler function.
+ */
 const DetailPanel: React.FC<Props> = ({
   row,
   selectedTags,
