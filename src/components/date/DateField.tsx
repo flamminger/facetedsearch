@@ -9,7 +9,7 @@ interface Props {
   setEndDate: (endDate: string) => void;
 }
 
-const DateSelect: React.FC<Props> = ({
+const DateField: React.FC<Props> = ({
   dateRange,
   setDateRange,
   startDate,
@@ -17,7 +17,7 @@ const DateSelect: React.FC<Props> = ({
   setStartDate,
   setEndDate,
 }) => {
-  const handleStartDateChange = (startDate: string) => {
+  const startDateChangeHandler = (startDate: string) => {
     const date = new Date(startDate);
     if (!isNaN(date.getTime())) {
       setDateRange([date.getTime(), dateRange[1]]);
@@ -25,7 +25,7 @@ const DateSelect: React.FC<Props> = ({
     }
   };
 
-  const handleEndDateChange = (endDate: string) => {
+  const endDateChangeHandler = (endDate: string) => {
     const date = new Date(endDate);
     if (!isNaN(date.getTime())) {
       setDateRange([dateRange[0], date.getTime()]);
@@ -34,22 +34,26 @@ const DateSelect: React.FC<Props> = ({
   };
 
   return (
-    <Box display="flex" justifyContent="space-between" width="100%" pt={4}>
+    <Box display="flex" justifyContent="space-between" width="100%">
       <TextField
         id="startDate"
         label="Start Date"
         type="date"
         value={startDate}
         onChange={(e) => setStartDate(e.target.value)}
-        onBlur={() => handleStartDateChange(startDate)}
+        onBlur={() => startDateChangeHandler(startDate)}
         onKeyDown={(e) => {
           if (e.key === "Enter") {
-            handleEndDateChange(startDate);
+            endDateChangeHandler(startDate);
           }
         }}
         InputLabelProps={{
           shrink: true,
         }}
+        variant="outlined"
+        color="secondary"
+        fullWidth
+        margin="normal"
       />
       <TextField
         id="endDate"
@@ -57,15 +61,19 @@ const DateSelect: React.FC<Props> = ({
         type="date"
         value={endDate}
         onChange={(e) => setEndDate(e.target.value)}
-        onBlur={() => handleEndDateChange(endDate)}
+        onBlur={() => endDateChangeHandler(endDate)}
         onKeyDown={(e) => {
           if (e.key === "Enter") {
-            handleStartDateChange(endDate);
+            startDateChangeHandler(endDate);
           }
         }}
+        variant="outlined"
+        color="secondary"
+        fullWidth
+        margin="normal"
       />
     </Box>
   );
 };
 
-export default DateSelect;
+export default DateField;

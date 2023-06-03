@@ -8,11 +8,10 @@ import {
   IUniqueTags,
 } from "../../types/interfaces";
 import React, { useCallback, useEffect, useState } from "react";
-import { Box, Button, Container, FormGroup } from "@mui/material";
+import { Box, Button, FormGroup } from "@mui/material";
 import FacetGroup from "./FacetGroup";
 import { useSelectedTags } from "../../contexts/SelectedTagsContext";
-import DateSlider from "../ui/DateSlider";
-import DateSelect from "../ui/DateSelect";
+import DateSelectSwitch from "../date/DateSelectSwitch";
 
 interface Props {
   AppData: IAppData;
@@ -107,21 +106,15 @@ const FacetGeneration: React.FC<Props> = ({
             pageChangeHandler={pageChangeHandler}
           />
         )}
-        <Container>
-          <DateSlider
-            dateRange={dateRange}
-            setDateRange={setDateRange}
-            minMaxDate={minMaxDate}
-          />
-          <DateSelect
-            startDate={startDate}
-            endDate={endDate}
-            dateRange={dateRange}
-            setDateRange={setDateRange}
-            setStartDate={setStartDate}
-            setEndDate={setEndDate}
-          />
-        </Container>
+        <DateSelectSwitch
+          dateRange={dateRange}
+          setDateRange={setDateRange}
+          minMaxDate={minMaxDate}
+          startDate={startDate}
+          endDate={endDate}
+          setStartDate={setStartDate}
+          setEndDate={setEndDate}
+        />
       </FormGroup>
       <Box component="div" sx={buttonStyle}>
         <Button
