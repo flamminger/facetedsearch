@@ -29,3 +29,4 @@ yarn-error.log*
 /public/api/sample.json
 /public/data.json
 /public/api/rta.json
+/public/rta.json
